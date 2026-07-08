@@ -1,0 +1,180 @@
+:root {
+  --black: #0b0b0c;
+  --black-soft: #141416;
+  --ivory: #f5f1e8;
+  --muted: #b8b4aa;
+  --gold: #c7a252;
+  --gold-dim: #8a723c;
+  --serif: "Playfair Display", Georgia, serif;
+  --sans: "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--ivory);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ivory);
+}
+
+/* Header */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem 6vw;
+  border-bottom: 1px solid rgba(199, 162, 82, 0.18);
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--ivory);
+}
+
+.site-header nav {
+  display: flex;
+  gap: 2.25rem;
+}
+
+.site-header nav a {
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.site-header nav a:hover { color: var(--gold); }
+
+/* Hero */
+
+.hero {
+  padding: 9rem 6vw 7rem;
+  max-width: 46rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  line-height: 1.25;
+  margin-bottom: 1.25rem;
+}
+
+.hero .lead {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 32rem;
+  margin-bottom: 2.25rem;
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cta:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+/* Sections */
+
+section {
+  padding: 5rem 6vw;
+  border-top: 1px solid rgba(199, 162, 82, 0.12);
+}
+
+section h2 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  margin-bottom: 2.5rem;
+}
+
+/* Servicios grid */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5px;
+  background: rgba(199, 162, 82, 0.18);
+}
+
+.card {
+  background: var(--black-soft);
+  padding: 2rem 1.75rem;
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Nosotros */
+
+.nosotros p {
+  color: var(--muted);
+  max-width: 38rem;
+}
+
+/* Contacto */
+
+.contacto .mail {
+  display: inline-block;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-dim);
+  padding-bottom: 0.2rem;
+}
+
+.contacto .mail:hover { color: var(--ivory); }
+
+/* Footer */
+
+.site-footer {
+  padding: 2.5rem 6vw;
+  border-top: 1px solid rgba(199, 162, 82, 0.12);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .site-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .site-header nav { gap: 1.5rem; }
+  .hero { padding: 6rem 6vw 4rem; }
+  section { padding: 3.5rem 6vw; }
+}
