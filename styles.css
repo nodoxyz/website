@@ -11,7 +11,10 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
 
 body {
   background: var(--black);
@@ -25,11 +28,11 @@ a { color: inherit; text-decoration: none; }
 
 .eyebrow {
   font-family: var(--sans);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
+  font-size: 1rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 h1, h2, h3 {
@@ -41,10 +44,16 @@ h1, h2, h3 {
 /* Header */
 
 .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.75rem 6vw;
+  background: var(--black);
   border-bottom: 1px solid rgba(199, 162, 82, 0.18);
 }
 
@@ -53,6 +62,11 @@ h1, h2, h3 {
   font-size: 1.25rem;
   letter-spacing: 0.04em;
   color: var(--gold);
+}
+
+.logo {
+  height: 42px;
+  width: auto;
 }
 
 .site-header nav {
@@ -71,21 +85,31 @@ h1, h2, h3 {
 /* Hero */
 
 .hero {
-  padding: 9rem 6vw 7rem;
-  max-width: 46rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  padding: 6rem 6vw 4rem;
+  max-width: none;
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 4.5vw, 3.25rem);
-  line-height: 1.25;
-  margin-bottom: 1.25rem;
+  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+  max-width: 18ch;
+  font-weight: 500;
 }
 
 .hero .lead {
   color: var(--muted);
-  font-size: 1.1rem;
-  max-width: 32rem;
-  margin-bottom: 2.25rem;
+  font-size: 1.15rem;
+  max-width: 36rem;
+  margin: 0 0 2.5rem;
 }
 
 .cta {
@@ -104,70 +128,176 @@ h1, h2, h3 {
   color: var(--black);
 }
 
+/* Hero — cita Arquímedes */
+
+.hero-quote {
+  position: absolute;
+  bottom: 2rem;
+  right: 6vw;
+  text-align: right;
+  white-space: nowrap;
+  border: none;
+  margin: 0;
+}
+
+.hero-quote p {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--gold-dim);
+}
+
+.hero-quote cite {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--gold-dim);
+  margin-top: 0.3rem;
+  opacity: 0.5;
+}
+
 /* Sections */
 
 section {
-  padding: 5rem 6vw;
-  border-top: 1px solid rgba(199, 162, 82, 0.12);
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 8vw;
+  border-top: 1px solid rgba(199, 162, 82, 0.10);
 }
 
 section h2 {
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  margin-bottom: 2.5rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 500;
+  margin-bottom: 2rem;
 }
 
 /* Servicios grid */
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5px;
   background: rgba(199, 162, 82, 0.18);
 }
 
 .card {
   background: var(--black-soft);
-  padding: 2rem 1.75rem;
+  padding: 5rem 2.75rem;
+  transition: background 0.3s ease;
+}
+
+.card:hover {
+  background: #1a1a1d;
 }
 
 .card h3 {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: var(--gold);
-  margin-bottom: 0.6rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
 }
 
-.card p {
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card li {
   color: var(--muted);
   font-size: 0.95rem;
+  line-height: 2;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  background: var(--gold-dim);
+  border-radius: 50%;
 }
 
 /* Nosotros */
 
-.nosotros p {
+.nosotros-texto {
+  max-width: 42rem;
+}
+
+.nosotros-texto p {
   color: var(--muted);
-  max-width: 38rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.nosotros-texto p:last-child {
+  margin-bottom: 0;
 }
 
 /* Contacto */
 
-.contacto .mail {
-  display: inline-block;
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  color: var(--gold);
-  border-bottom: 1px solid var(--gold-dim);
-  padding-bottom: 0.2rem;
+.contacto {
+  align-items: flex-start;
+  text-align: left;
 }
 
-.contacto .mail:hover { color: var(--ivory); }
+.contacto .mail {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid var(--gold-dim);
+  padding-bottom: 0.2rem;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.contacto .mail:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* Section group (contacto + footer) */
+
+.section-group {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(199, 162, 82, 0.10);
+}
+
+.section-group .contacto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 8vw;
+  border-top: none;
+  min-height: auto;
+  scroll-snap-align: none;
+}
 
 /* Footer */
 
 .site-footer {
-  padding: 2.5rem 6vw;
-  border-top: 1px solid rgba(199, 162, 82, 0.12);
-  color: var(--muted);
-  font-size: 0.8rem;
+  padding: 1.5rem 8vw;
+  border-top: 1px solid rgba(199, 162, 82, 0.15);
+  color: var(--ivory);
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  text-align: center;
+  letter-spacing: 0.06em;
 }
 
 /* Responsive */
@@ -175,6 +305,12 @@ section h2 {
 @media (max-width: 640px) {
   .site-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .site-header nav { gap: 1.5rem; }
-  .hero { padding: 6rem 6vw 4rem; }
-  section { padding: 3.5rem 6vw; }
+  .hero { padding: 6rem 6vw 14rem; }
+  .hero-quote { position: relative; bottom: auto; right: auto; text-align: center; margin-top: 3rem; white-space: normal; }
+  .hero-quote p { font-size: 1rem; }
+  section { padding: 4rem 6vw; }
+  .section-group .contacto { padding: 4rem 6vw; }
+  .site-footer { padding: 1.5rem 6vw; }
+  .grid { grid-template-columns: 1fr; }
+  .card { padding: 3rem 2rem; }
 }
