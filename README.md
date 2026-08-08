@@ -19,8 +19,12 @@ tipografía están como variables CSS al principio de `styles.css`
 
 ## Deploy
 
-Todavía no está conectado a nada. Cuando esté lista la cuenta de GitHub
-(ver `Conexion/checklist-cuenta-github-nodoxyz.md`), este repo pasa a
-`github.com/nodoxyz/website` y de ahí se puede desplegar gratis en
-Cloudflare Pages, Netlify o Vercel apuntando los registros del dominio
-(ver la guía de Cloudflare en `Conexion/`).
+Conectado a Cloudflare Pages (proyecto `nodoxyz`, dominios `nodoxyz.cl`
+y `www.nodoxyz.cl`) vía integración con Git: cada push a `main` dispara
+un deploy automático de todo el repo (sin build command, output en la
+raíz). `worker/` y `worker-lead/` quedan servidos como archivos
+estáticos más junto con el resto — no es un problema de seguridad (no
+tienen secretos, ya son públicos en GitHub), pero no se ejecutan como
+Worker ahí; esos se despliegan aparte con
+`npx wrangler deploy --name <nombre>` desde cada carpeta (ver sus
+README.md).
