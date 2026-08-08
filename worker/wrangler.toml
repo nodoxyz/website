@@ -1,0 +1,11 @@
+# Ver README.md en esta carpeta para el despliegue paso a paso.
+
+name = "nodoxyz-registro-profesionales"
+main = "profesionales-worker.js"
+compatibility_date = "2026-01-01"
+
+# Pega aquí el id que imprime `wrangler kv namespace create REGISTROS`:
+kv_namespaces = [
+  { binding = "REGISTROS", id = "92e72bbbf65e49fc89dc39ffe5e9ed9f" },
+  { binding = "CVFILES", id = "37ced3def8cd47b4ad0733dd8ddf61ab" }
+]

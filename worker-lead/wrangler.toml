@@ -1,0 +1,9 @@
+# Ver README.md en esta carpeta para el despliegue paso a paso.
+
+name = "nodoxyz-lead-widget"
+main = "lead-worker.js"
+compatibility_date = "2026-01-01"
+
+kv_namespaces = [
+  { binding = "LEADS", id = "4dd8130445824dcfb0ea9f1ed16aad00" }
+]
