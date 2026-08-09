@@ -9,3 +9,10 @@ kv_namespaces = [
   { binding = "REGISTROS", id = "92e72bbbf65e49fc89dc39ffe5e9ed9f" },
   { binding = "CVFILES", id = "37ced3def8cd47b4ad0733dd8ddf61ab" }
 ]
+
+# El correo de agradecimiento al registrarse sale vía la API de Resend
+# (secret RESEND_API_KEY, ver README.md) — no usa binding de Cloudflare.
+# enviar-resend.js importa correo-registro-nodoxyz.html como texto plano:
+rules = [
+  { type = "Text", globs = ["**/*.html"], fallthrough = true }
+]

@@ -25,6 +25,8 @@
  *   npx --yes wrangler@latest deploy profesionales-worker.js --name nodoxyz-registro-profesionales
  */
 
+import { enviarConfirmacion } from './enviar-resend.js';
+
 // Orígenes permitidos para el POST público del formulario.
 // 'null' cubre pruebas locales abriendo profesionales.html con doble clic (file://).
 const ALLOWED_ORIGINS = [
@@ -71,6 +73,15 @@ function rutValido(rutRaw) {
   const resto = 11 - (suma % 11);
   const dvEsperado = resto === 11 ? '0' : resto === 10 ? 'K' : String(resto);
   return dv === dvEsperado;
+}
+
+// Se guarda siempre en el mismo formato (solo dígitos + verificador, sin
+// puntos ni guion) porque el RUT se usa como identificador al cruzar con
+// otras fuentes — un mismo RUT con formato distinto según quién lo mandó
+// rompería ese cruce. El formulario web autoformatea con puntos y guion
+// mientras se escribe; acá solo se normaliza lo que efectivamente se guarda.
+function normalizarRut(rutRaw) {
+  return String(rutRaw || '').replace(/[.\s-]/g, '').toUpperCase();
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -120,6 +131,21 @@ async function parseBody(request) {
     Object.assign(fields, body);
   }
   return { fields, file };
+}
+
+// Correo de agradecimiento a quien acaba de registrarse (enviarConfirmacion,
+// en enviar-resend.js, vía la API de Resend — Cloudflare Email Sending
+// quedó descartado porque requiere el plan Workers Paid). Best-effort: el
+// registro ya quedó guardado en KV antes de llamar a esto, así que un fallo
+// de envío (rate limit, etc.) no debe tumbar la respuesta 201 — solo se
+// loggea para revisar con `wrangler tail`.
+async function enviarCorreoAgradecimiento(env, registro) {
+  if (!env.RESEND_API_KEY) return;
+  try {
+    await enviarConfirmacion({ email: registro.email, nombre: registro.nombre }, env);
+  } catch (err) {
+    console.error('No se pudo enviar el correo de agradecimiento:', err);
+  }
 }
 
 export default {
@@ -175,12 +201,12 @@ export default {
         estado: 'nuevo',
         creado: new Date().toISOString(),
         nombre: String(fields.nombre).trim(),
-        rut: String(fields.rut || '').trim(),
+        rut: fields.rut && String(fields.rut).trim() !== '' ? normalizarRut(fields.rut) : '',
         email: String(fields.email).trim(),
         telefono: String(fields.telefono || '').trim(),
-        region: String(fields.region || '').trim(),
+        region: String(fields.region_id || '').trim() ? String(fields.region || '').trim() : '',
         region_id: String(fields.region_id || '').trim(),
-        comuna: String(fields.comuna || '').trim(),
+        comuna: String(fields.comuna_id || '').trim() ? String(fields.comuna || '').trim() : '',
         comuna_id: String(fields.comuna_id || '').trim(),
         fecha_nacimiento: String(fields.fecha_nacimiento || '').trim(),
         nacionalidad: String(fields.nacionalidad || '').trim(),
@@ -215,6 +241,7 @@ export default {
       }
 
       await env.REGISTROS.put(id, JSON.stringify(registro));
+      await enviarCorreoAgradecimiento(env, registro);
       return json({ ok: true, id }, 201, headers);
     }
 

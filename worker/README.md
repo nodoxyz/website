@@ -26,6 +26,36 @@ multipart, guarda en ambos namespaces de KV; GET /registros y GET /cv/<key>
 con `x-admin-key` los devuelven correctamente) — los datos de prueba se
 borraron después.
 
+## Correo de agradecimiento
+
+Tras guardar el registro en KV, el Worker manda un correo de agradecimiento
+a la persona que se registró, desde `contacto@nodoxyz.cl` (ya enrutado por
+Cloudflare Email Routing hacia `admin.nodoxyz@gmail.com` — si alguien
+responde, llega). Es best-effort: `enviarCorreoAgradecimiento` en
+`profesionales-worker.js` envuelve el envío en try/catch — si falla, el
+registro igual queda guardado y la respuesta sigue siendo `201`, el error
+solo se loggea (`wrangler tail`).
+
+El envío en sí vive en dos archivos aparte:
+- `enviar-resend.js` — arma el asunto y el texto plano, y llama a la API de
+  **Resend** (`fetch` directo a `api.resend.com`, sin dependencias/SDK).
+- `correo-registro-nodoxyz.html` — la plantilla HTML (tabla, email-safe),
+  con `{{nombre}}` como placeholder. Se importa como texto plano gracias a
+  la regla de módulo `Text` en `wrangler.toml` (`rules = [{ type = "Text",
+  globs = ["**/*.html"] }]`) — sigue siendo un deploy de archivo único, sin
+  build step propio, Wrangler resuelve el import al empaquetar.
+
+Se descartó el binding nativo de Cloudflare (`send_email`/Email Sending)
+porque requiere el plan **Workers Paid** (US$5/mes); Resend tiene plan
+gratis (3.000 emails/mes) y no depende del plan de Cloudflare.
+
+- Cuenta en resend.com (login `admin.nodoxyz@gmail.com`), dominio
+  `nodoxyz.cl` agregado y **verificado** (SPF/DKIM en un subdominio
+  `send.nodoxyz.cl` para no tocar el SPF que ya usa Cloudflare Email
+  Routing en la raíz).
+- Secret `RESEND_API_KEY` ya cargado (`wrangler secret put RESEND_API_KEY`
+  — si se pierde, generar uno nuevo en resend.com → API Keys).
+
 ## Actualizar el Worker tras cambios
 
 ```
