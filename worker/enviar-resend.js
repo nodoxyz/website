@@ -1,73 +1,48 @@
 // Envío del correo de confirmación de registro vía Resend.
 // Pensado para un Cloudflare Worker: RESEND_API_KEY va como secret.
-// La plantilla HTML se importa como texto (wrangler soporta `import html from "./correo-registro-nodoxyz.html"`
-// con la regla de módulo Text, o pégala aquí como template literal).
+// La plantilla se importa como texto (regla de módulo Text en wrangler.toml)
+// o se pega aquí como template literal.
 
-import plantillaHtml from "./correo-registro-nodoxyz.html";
+import plantillaHtml from "./correo-registro-nodoxyz-dorado.html";
 
 const REMITENTE = "Ingeniería NodoXYZ <contacto@nodoxyz.cl>";
 const RESPUESTA = "contacto@nodoxyz.cl";
-const ASUNTO = "Recibimos tu registro — Red de Profesionales NodoXYZ";
+const ASUNTO = "Registro recibido — Red de Profesionales NodoXYZ";
 
 function textoPlano(nombre) {
   return `Hola ${nombre}:
 
-Gracias por registrarte en la Red de Profesionales de Ingeniería NodoXYZ Limitada.
-Recibimos correctamente tu registro y tu currículum.
+Tu currículum ya está en la Red de Profesionales de Ingeniería NodoXYZ.
+No necesitas hacer nada más por ahora.
 
-Revisaremos tu experiencia y especialidad para asociar tu perfil a los tipos de
-licitaciones y proyectos en los que puedas aportar mayor valor.
+Cuando una licitación o proyecto coincida con tu perfil, te contactaremos con los
+requerimientos técnicos y las condiciones de participación.
 
-QUÉ SIGUE
-
-Cuando identifiquemos una licitación o proyecto compatible con tu perfil, nos
-pondremos en contacto contigo para compartir la información correspondiente.
-En ese momento te indicaremos:
-
-  - Mandante
-  - Alcance del servicio
-  - Plazos
-  - Condiciones de participación
-
-La invitación y cualquier solicitud de antecedentes adicionales se realizarán
-antes de presentar tu perfil al proceso correspondiente.
-
-NUESTRO COMPROMISO
-
-Tu información es tratada exclusivamente para los fines descritos. No
-presentaremos tu CV en una licitación ni lo compartiremos con terceros sin tu
+Tu CV no se presenta en ninguna licitación ni se comparte con terceros sin tu
 autorización expresa para ese proceso en particular.
 
-ACTUALIZAR TUS DATOS
-
-Si obtienes nuevas certificaciones o cambia tu situación laboral, envía una
-nueva versión de tu información desde https://nodoxyz.cl/profesionales
-La nueva versión reemplazará a la anterior en nuestra base de profesionales.
-
-TUS DATOS PERSONALES
-
-El responsable del tratamiento es Ingeniería NodoXYZ Limitada, RUT 78.471.316-4.
-Puedes solicitar el acceso, rectificación o eliminación de tus datos escribiendo
-a contacto@nodoxyz.cl. Si solicitas tu baja de la red, eliminaremos tu CV y tus
-datos de nuestra base.
-
-Gracias por formar parte de la Red de Profesionales NodoXYZ.
-Esperamos contar contigo en futuros proyectos.
+Síguenos en LinkedIn: https://www.linkedin.com/company/nodoxyz
+Mantente al tanto de nuestros proyectos y del rubro.
 
 Equipo NodoXYZ
 
 --
-INGENIERÍA NODOXYZ LIMITADA
-RUT 78.471.316-4
-https://nodoxyz.cl · https://www.linkedin.com/company/nodoxyz · contacto@nodoxyz.cl
+¿Nuevas certificaciones? Envía una versión actualizada en
+https://nodoxyz.cl/profesionales y reemplazará a la anterior.
 
-Recibes este correo porque registraste tus antecedentes en nodoxyz.cl.
-Para dejar de recibir nuestras comunicaciones informativas, escríbenos a
+INGENIERÍA NODOXYZ LIMITADA · RUT 78.471.316-4
+Responsable del tratamiento de tus datos. Para acceder, rectificar o eliminar
+tu información, escribe a contacto@nodoxyz.cl
+Política de privacidad: https://nodoxyz.cl/legal/privacidad.html
+
+Recibes este correo porque registraste tus antecedentes en
+https://nodoxyz.cl/profesionales
+Para dejar de recibir comunicaciones informativas, escríbenos a
 contacto@nodoxyz.cl`;
 }
 
 export async function enviarConfirmacion({ email, nombre }, env) {
-  const saludo = (nombre || "").trim() || "";
+  const saludo = (nombre || "").trim();
   const html = plantillaHtml.replaceAll("{{nombre}}", saludo);
 
   const respuesta = await fetch("https://api.resend.com/emails", {
