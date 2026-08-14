@@ -629,9 +629,18 @@ function initFormulario() {
   // Modal rápido de autorización: aparece solo cuando Nombre/Email/CV ya
   // están OK y lo único que falta es el check de la política de privacidad.
   const modalBackdrop = document.getElementById('consent-modal-backdrop');
+  const modalPanel = modalBackdrop.querySelector('.mini-modal');
   const modalAceptar = document.getElementById('consent-modal-accept');
   const modalCancelar = document.getElementById('consent-modal-cancel');
   const modalNewsletter = document.getElementById('consent-modal-newsletter');
+  const modalConfirmarBlock = document.getElementById('consent-modal-confirmar');
+  const modalGraciasBlock = document.getElementById('consent-modal-gracias');
+  const modalCerrarGracias = document.getElementById('consent-modal-close-gracias');
+  const modalEnviandoBlock = document.getElementById('consent-modal-enviando');
+  const modalErrorBlock = document.getElementById('consent-modal-error');
+  const modalErrorText = document.getElementById('consent-modal-error-text');
+  const modalCerrarError = document.getElementById('consent-modal-close-error');
+  const modalReintentar = document.getElementById('consent-modal-retry');
 
   function abrirModalConsentimiento() {
     consentimientoLabel?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -639,22 +648,64 @@ function initFormulario() {
     modalBackdrop.hidden = false;
     modalAceptar.focus();
   }
+  // Deja el modal listo para la próxima vez (estado "Confirmar autorización").
+  function resetModalConsentimiento() {
+    modalGraciasBlock.hidden = true;
+    modalEnviandoBlock.hidden = true;
+    modalErrorBlock.hidden = true;
+    modalConfirmarBlock.hidden = false;
+    modalPanel.setAttribute('aria-labelledby', 'consent-modal-title');
+  }
   function cerrarModalConsentimiento() {
     modalBackdrop.hidden = true;
+    resetModalConsentimiento();
+  }
+  // Los tres estados de abajo (enviando/gracias/error) sólo tocan el modal
+  // -- nunca el texto suelto de la página (`status`), que se reserva para
+  // cuando se manda sin pasar por acá (el usuario marcó el check él mismo).
+  function mostrarEnviandoModal() {
+    modalConfirmarBlock.hidden = true;
+    modalGraciasBlock.hidden = true;
+    modalErrorBlock.hidden = true;
+    modalEnviandoBlock.hidden = false;
+    modalBackdrop.hidden = false;
+  }
+  function mostrarGraciasModal() {
+    modalConfirmarBlock.hidden = true;
+    modalEnviandoBlock.hidden = true;
+    modalErrorBlock.hidden = true;
+    modalGraciasBlock.hidden = false;
+    modalPanel.setAttribute('aria-labelledby', 'consent-modal-gracias-title');
+    modalBackdrop.hidden = false;
+    modalCerrarGracias.focus();
+  }
+  function mostrarErrorModal(mensaje) {
+    modalConfirmarBlock.hidden = true;
+    modalEnviandoBlock.hidden = true;
+    modalGraciasBlock.hidden = true;
+    modalErrorText.textContent = mensaje;
+    modalErrorBlock.hidden = false;
+    modalPanel.setAttribute('aria-labelledby', 'consent-modal-error-title');
+    modalBackdrop.hidden = false;
+    modalReintentar.focus();
   }
   modalAceptar.addEventListener('click', () => {
     form.consentimiento.checked = true;
     form.newsletter.checked = modalNewsletter.checked;
     validarConsentimientoAhora();
-    cerrarModalConsentimiento();
+    // El modal se queda abierto: el envío lo va a llevar a "enviando" y
+    // después a "gracias" o "error", nunca se cierra antes de tiempo.
     form.requestSubmit();
   });
   modalCancelar.addEventListener('click', cerrarModalConsentimiento);
+  modalCerrarGracias.addEventListener('click', cerrarModalConsentimiento);
+  modalCerrarError.addEventListener('click', cerrarModalConsentimiento);
+  modalReintentar.addEventListener('click', () => form.requestSubmit());
   modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) cerrarModalConsentimiento();
+    if (e.target === modalBackdrop && modalEnviandoBlock.hidden) cerrarModalConsentimiento();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modalBackdrop.hidden) cerrarModalConsentimiento();
+    if (e.key === 'Escape' && !modalBackdrop.hidden && modalEnviandoBlock.hidden) cerrarModalConsentimiento();
   });
 
   // Ícono junto al título del nav: reabre el mismo popup "Únete a nuestra
@@ -780,8 +831,15 @@ function initFormulario() {
     for (const titulo of titulosSeleccionados) body.append('titulos', titulo);
     if (cvFile) body.append('cv_file', cvFile, cvFile.name);
 
+    // Si el modal está abierto es porque se llegó acá vía "Autorizar y
+    // enviar": todo el feedback (enviando/éxito/error) va adentro del
+    // modal. Si no está abierto (la persona tildó el check ella misma en
+    // la página y mandó directo), se sigue usando el texto de siempre.
+    const conModal = !modalBackdrop.hidden;
+
     btnEnviar.disabled = true;
-    setStatus(status, 'Enviando...', '');
+    if (conModal) mostrarEnviandoModal();
+    else setStatus(status, 'Enviando...', '');
 
     try {
       const res = await fetch(WORKER_URL, { method: 'POST', body });
@@ -789,7 +847,8 @@ function initFormulario() {
         const respBody = await res.json().catch(() => ({}));
         throw new Error(respBody.error || `Error del servidor (HTTP ${res.status})`);
       }
-      setStatus(status, '¡Gracias! Recibimos tu registro y te contactaremos cuando surja un proyecto para tu rubro.', 'ok');
+      if (conModal) mostrarGraciasModal();
+      else setStatus(status, '¡Gracias! Recibimos tu registro y te contactaremos cuando surja un proyecto para tu rubro.', 'ok');
       form.reset();
       poblarComunas(selectComuna, '');
       cvFile = null;
@@ -798,7 +857,8 @@ function initFormulario() {
       document.getElementById('titulo_otro_check').dispatchEvent(new Event('change'));
       document.getElementById('rubro_otro_check').dispatchEvent(new Event('change'));
     } catch (err) {
-      setStatus(status, `No se pudo enviar el registro: ${err.message}`, 'error');
+      if (conModal) mostrarErrorModal(`No se pudo enviar el registro: ${err.message}`);
+      else setStatus(status, `No se pudo enviar el registro: ${err.message}`, 'error');
     } finally {
       btnEnviar.disabled = false;
     }

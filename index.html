@@ -53,7 +53,7 @@
 
   <section class="hero" id="inicio">
     <h1>Soluciones con ingeniería</h1>
-    <a class="cta" href="#contacto">Consulta aquí</a>
+    <a class="cta" href="#contacto" id="btn-consulta-aqui">Consulta aquí</a>
     <blockquote class="hero-quote">
       <p>Dame un punto de apoyo y moveré el mundo.</p>
       <cite>— Arquímedes</cite>
@@ -175,7 +175,36 @@
   </div>
 </div>
 
+<button type="button" class="chat-launcher" id="chat-launcher" aria-label="Abrir consulta rápida">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 5.5h16v11H8.5L4 20.5Z"/>
+    <path d="M8.5 10h7M8.5 13h4.5"/>
+  </svg>
+</button>
+
+<div class="chat-panel" id="chat-panel" hidden role="dialog" aria-modal="false" aria-label="Consulta rápida">
+  <div class="chat-panel-header">
+    <div>
+      <span class="chat-panel-badge">NodoXYZ</span>
+      <span class="chat-panel-sub">Normalmente respondemos rápido</span>
+    </div>
+    <button class="chat-panel-close" id="chat-panel-close" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="chat-transcript" id="chat-transcript">
+    <div class="chat-composer" id="chat-composer"></div>
+  </div>
+
+  <div class="chat-panel-footer">
+    <a class="chat-fallback" href="mailto:contacto@nodoxyz.cl">o escríbenos directo</a>
+  </div>
+</div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="data/localidades.js"></script>
+<script src="data/bot-config.js"></script>
 <script src="js/servicios-carousel.js"></script>
+<script src="js/chat-widget-guiado.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const btnRegistro = document.getElementById('btn-registro-nav');

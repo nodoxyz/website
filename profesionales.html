@@ -314,16 +314,39 @@
 
   <div class="mini-modal-backdrop" id="consent-modal-backdrop" hidden>
     <div class="mini-modal" role="dialog" aria-modal="true" aria-labelledby="consent-modal-title">
-      <h3 id="consent-modal-title">Confirmar autorización</h3>
-      <p>Para enviar el registro necesitamos que autorices el uso de tus datos, según la
-        <a href="legal/privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</p>
-      <label class="checkbox">
-        <input type="checkbox" id="consent-modal-newsletter">
-        <span>Quiero recibir novedades del rubro (construcción, ingeniería y tecnología) y oportunidades de NodoXYZ por email. <em class="tag-opcional">Opcional.</em></span>
-      </label>
-      <div class="mini-modal-actions">
-        <button type="button" class="mini-modal-btn mini-modal-btn--ghost" id="consent-modal-cancel">Cancelar</button>
-        <button type="button" class="mini-modal-btn mini-modal-btn--gold" id="consent-modal-accept">Autorizar y enviar</button>
+      <div id="consent-modal-confirmar">
+        <h3 id="consent-modal-title">Confirmar autorización</h3>
+        <p>Para enviar el registro necesitamos que autorices el uso de tus datos, según la
+          <a href="legal/privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</p>
+        <label class="checkbox">
+          <input type="checkbox" id="consent-modal-newsletter">
+          <span>Quiero recibir novedades del rubro (construcción, ingeniería y tecnología) y oportunidades de NodoXYZ por email. <em class="tag-opcional">Opcional.</em></span>
+        </label>
+        <div class="mini-modal-actions">
+          <button type="button" class="mini-modal-btn mini-modal-btn--ghost" id="consent-modal-cancel">Cancelar</button>
+          <button type="button" class="mini-modal-btn mini-modal-btn--gold" id="consent-modal-accept">Autorizar y enviar</button>
+        </div>
+      </div>
+      <div id="consent-modal-gracias" class="mini-modal-resultado" hidden>
+        <h3 id="consent-modal-gracias-title">¡Gracias por tu registro!</h3>
+        <p>Recibimos tu información correctamente. Te contactaremos apenas surja un proyecto o una oportunidad que calce con tu perfil.</p>
+        <div class="mini-modal-actions">
+          <button type="button" class="mini-modal-btn mini-modal-btn--gold" id="consent-modal-close-gracias">Cerrar</button>
+        </div>
+      </div>
+      <div id="consent-modal-enviando" hidden>
+        <div class="mini-modal-loading">
+          <span class="mini-modal-spinner" aria-hidden="true"></span>
+          <p>Enviando tu registro…</p>
+        </div>
+      </div>
+      <div id="consent-modal-error" class="mini-modal-resultado" hidden>
+        <h3 id="consent-modal-error-title">No se pudo enviar</h3>
+        <p class="mini-modal-error-text" id="consent-modal-error-text"></p>
+        <div class="mini-modal-actions">
+          <button type="button" class="mini-modal-btn mini-modal-btn--ghost" id="consent-modal-close-error">Cerrar</button>
+          <button type="button" class="mini-modal-btn mini-modal-btn--gold" id="consent-modal-retry">Reintentar</button>
+        </div>
       </div>
     </div>
   </div>

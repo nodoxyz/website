@@ -1,6 +1,6 @@
 # Worker — widget de contacto guiado (leads)
 
-Recibe el POST del widget de chat guiado (`js/chat-widget-guiado.js`, Fase 2)
+Recibe el POST del widget de chat guiado (`js/chat-widget-guiado.js`)
 y guarda cada lead en Cloudflare KV (namespace `LEADS`). Mismo patrón que
 `Website/worker/profesionales-worker.js` (KV, honeypot, `x-admin-key` para
 lectura), con una diferencia importante: este formulario es público y sin
@@ -13,18 +13,27 @@ valida **Turnstile** en el servidor antes de guardar nada.
 - KV namespace `LEADS` creado y enlazado en `wrangler.toml`.
 - Widget de Turnstile creado vía API para el dominio `nodoxyz.cl` (modo
   `managed`) — site key y secret key en `Conexion/credenciales.md`. El
-  site key (público) todavía no está incrustado en ningún HTML — eso es
-  Fase 2.
+  site key (público) ya está incrustado en `index.html` (Fase 2, ver abajo).
 - Secrets `ADMIN_KEY` y `TURNSTILE_SECRET` cargados en el Worker.
 - Probado end-to-end con `curl`: honeypot descarta en silencio (200 sin
   guardar), falta de `turnstileToken` rechaza con 400, `GET /leads` exige
   `x-admin-key` correcta (401 sin ella, 200 con ella).
+- **Fase 2 (widget real en el sitio) construida**: `js/chat-widget-guiado.js`
+  + el modal en `index.html` (botón "Consulta aquí" del hero). Lee las
+  ramas/contexto de `data/bot-config.js` (exportado desde
+  `Agentes/Consulta Aqui/`, ver el README de esa carpeta para publicar un
+  cambio de flujo). **Ojo**: por el CORS cerrado a `https://nodoxyz.cl`
+  exacto (ver abajo), el envío real solo se puede probar en el sitio
+  desplegado — no local, no `file://`, no preview de `*.pages.dev`.
 
 Pendiente:
 
-- **Fase 2**: el widget real en el sitio (HTML/JS/CSS), con el site key de
-  Turnstile embebido — sin eso, nadie puede generar un `turnstileToken`
-  válido y `POST /lead` seguirá rechazando todo con 400.
+- **Verificar el envío real en producción** una vez desplegado este cambio
+  (push a `main`): completar el flujo en `nodoxyz.cl` y confirmar que el
+  lead aparece en `Agentes/Consulta Aqui/` tras `python actualizar.py`.
+- **Mandar los documentos de respaldo por correo** — el widget no tiene
+  (todavía) el paso de elegir documentos, y `lead-worker.js` no envía
+  correos. Ver "Fuera de alcance" en el README de `Agentes/Consulta Aqui/`.
 - **Rate limiting por IP** — no está en este archivo. Se configura en el
   dashboard de Cloudflare: Security → WAF → Rate limiting rules, sobre la
   ruta del Worker (`/lead`). El código no lo implementa porque el brief

@@ -1214,6 +1214,67 @@ section h2 {
 .form-status.ok { color: #8fbf8f; }
 .form-status.error { color: #d98a6b; }
 
+/* Estados "enviando"/"error" del mini-modal de autorización -- todo el
+   feedback del envío pasa por acá cuando el modal está abierto, en vez de
+   dejar un texto suelto atrás en la página que es fácil no ver. */
+.mini-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* Se acerca a la altura del estado "Confirmar autorización" a propósito
+     -- sin esto el cuadro se achica de golpe al pasar a "enviando" (mucho
+     menos contenido) y se nota como si fuera un modal distinto. */
+  min-height: 13rem;
+}
+
+/* Mismo motivo que .mini-modal-loading: "gracias" y "error" también tienen
+   bastante menos contenido que "Confirmar autorización" (sin el checkbox,
+   sin el segundo botón en el caso de gracias) y sin esto el cuadro se
+   achica al pasar de un estado a otro. */
+.mini-modal-resultado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 13rem;
+}
+
+/* Sin esto, `display:flex` de arriba le gana en especificidad al `[hidden]`
+   por defecto del navegador (misma especificidad, pero esta hoja carga
+   después) -- los tres estados quedaban visibles a la vez en vez de
+   ocultarse. Mismo motivo por el que .mini-modal-loading no tuvo este
+   problema: nunca lleva `hidden` puesto directamente, va adentro de
+   #consent-modal-enviando. */
+.mini-modal-resultado[hidden] {
+  display: none;
+}
+
+.mini-modal-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(199, 162, 82, 0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  animation: mini-modal-spin 0.8s linear infinite;
+}
+
+@keyframes mini-modal-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mini-modal-error-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.mini-modal-error-text {
+  color: #d98a6b;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
 @media (max-width: 900px) {
   .form-grid { grid-template-columns: repeat(2, 1fr); }
   .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1462,6 +1523,16 @@ section h2 {
   color: var(--gold);
 }
 
+.info-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.info-btn-primary:disabled:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
 .info-btn-fill {
   position: absolute;
   inset: 0;
@@ -1516,6 +1587,331 @@ section h2 {
   .info-cta-row {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+
+/* Widget "Consulta Aquí" — burbuja flotante + panel de chat.
+   Shell propio, no un modal: ancorado a una esquina, convive con el resto
+   de la página (se puede seguir navegando con el chat abierto), no se cierra
+   solo al clickear afuera. El transcript SOLO crece — nunca se borra una
+   burbuja ya escrita, ni la del bot ni la tuya; "Empezar de nuevo" agrega
+   burbujas nuevas en vez de touchear las viejas. */
+
+.chat-launcher {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 90;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--black);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.chat-launcher:hover {
+  transform: translateY(-2px);
+  background: #d8b565;
+}
+
+.chat-launcher svg {
+  width: 21px;
+  height: 21px;
+}
+
+.chat-launcher[hidden] { display: none; }
+
+.chat-panel {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 95;
+  width: min(336px, calc(100vw - 2rem));
+  max-height: min(560px, calc(100vh - 3rem));
+  background: var(--black-soft);
+  border: 1px solid rgba(199, 162, 82, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-panel:not([hidden]) {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.chat-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, rgba(199, 162, 82, 0.08) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(184, 180, 170, 0.16);
+  flex-shrink: 0;
+}
+
+.chat-panel-badge {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ivory);
+}
+
+.chat-panel-sub {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+.chat-panel-close {
+  background: transparent;
+  border: 1px solid rgba(199, 162, 82, 0.2);
+  color: var(--muted);
+  border-radius: 6px;
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-panel-close:hover {
+  border-color: var(--gold);
+  color: var(--ivory);
+}
+
+.chat-transcript {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 0.85rem 0.85rem 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  /* Sin esto, Windows dibuja su scrollbar clara por defecto (con flechitas
+     arriba/abajo) sobre el panel oscuro -- se ve como un artefacto roto
+     encima del primer mensaje. Firefox usa scrollbar-width/color; Chrome/Edge
+     necesitan el bloque ::-webkit-scrollbar de abajo. */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(199, 162, 82, 0.35) transparent;
+}
+
+.chat-transcript::-webkit-scrollbar { width: 7px; }
+.chat-transcript::-webkit-scrollbar-track { background: transparent; }
+.chat-transcript::-webkit-scrollbar-thumb {
+  background: rgba(199, 162, 82, 0.35);
+  border-radius: 4px;
+}
+.chat-transcript::-webkit-scrollbar-button { display: none; height: 0; width: 0; }
+
+.chat-msg { display: flex; }
+.chat-msg-bot { justify-content: flex-start; }
+.chat-msg-user { justify-content: flex-end; }
+
+.chat-msg-bubble {
+  max-width: 84%;
+  padding: 0.48rem 0.7rem;
+  border-radius: 9px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.chat-msg-bot .chat-msg-bubble {
+  background: var(--black);
+  border: 1px solid rgba(199, 162, 82, 0.15);
+  color: var(--ivory);
+  border-bottom-left-radius: 3px;
+}
+
+.chat-cta-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 500;
+  font-size: 0.77rem;
+  text-decoration: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.chat-cta-link:hover { background: #d8b565; }
+
+.chat-msg-user .chat-msg-bubble {
+  background: var(--gold);
+  color: var(--black);
+  border-bottom-right-radius: 3px;
+}
+
+.chat-typing .chat-msg-bubble {
+  display: flex;
+  gap: 0.28rem;
+  align-items: center;
+  padding: 0.75rem 0.95rem;
+}
+
+.chat-typing-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: chat-typing-bounce 1.2s infinite ease-in-out;
+}
+.chat-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.chat-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes chat-typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* Vive DENTRO de #chat-transcript (ver chat-widget-guiado.js), no afuera:
+   sin padding lateral propio -- ya lo hereda del padding del transcript --
+   solo separación vertical de la última burbuja. */
+.chat-composer {
+  padding: 0.5rem 0 0.5rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid rgba(184, 180, 170, 0.14);
+}
+
+.chat-composer:empty {
+  padding: 0;
+  margin: 0;
+  border-top: none;
+}
+
+.chat-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.chat-opcion {
+  background: var(--black);
+  border: 1px solid rgba(199, 162, 82, 0.28);
+  border-radius: 7px;
+  color: var(--ivory);
+  font-family: var(--sans);
+  font-size: 0.79rem;
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.chat-opcion:hover,
+.chat-opcion:focus-visible {
+  border-color: var(--gold);
+  background: rgba(199, 162, 82, 0.08);
+  outline: none;
+}
+
+.chat-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+/* Los botones y campos del composer reusan .info-btn-primary y .field del
+   resto del sitio (registro.js) -- se achican solo acá, sin tocar esas
+   clases globales, para no afectar el formulario de profesionales. */
+.chat-composer .info-btn-primary {
+  padding: 0.55rem 1rem;
+  font-size: 0.78rem;
+}
+
+.chat-composer .field input,
+.chat-composer .field textarea {
+  padding: 0.4rem 0.55rem;
+  font-size: 0.82rem;
+}
+
+.chat-composer .field label:not(.checkbox) {
+  font-size: 0.78rem;
+}
+
+.chat-turnstile {
+  margin: 0.15rem 0;
+  display: flex;
+  justify-content: center;
+  transform: scale(0.9);
+  transform-origin: center;
+}
+
+.chat-status {
+  font-size: 0.75rem;
+  color: var(--muted);
+  min-height: 1.1em;
+  margin-top: 0.3rem;
+}
+
+.chat-status.error { color: #d98a6b; }
+.chat-status.ok { color: #8fbf8f; }
+
+.chat-cambiar {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.chat-cambiar:hover { color: var(--gold); }
+
+.chat-panel-footer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0 0.85rem 0.7rem;
+}
+
+.chat-fallback {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.chat-fallback:hover { color: var(--gold); }
+
+@media (max-width: 600px) {
+  .chat-panel {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+  .chat-launcher {
+    right: 1.1rem;
+    bottom: 1.1rem;
   }
 }
 
