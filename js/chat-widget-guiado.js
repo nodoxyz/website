@@ -140,7 +140,7 @@
   function empezarDeNuevo() {
     estado = estadoInicial();
     limpiarComposer();
-    decirBot('Perfecto, empecemos de nuevo 👇', irARama);
+    decirBot('Perfecto, empecemos de nuevo.', irARama);
   }
 
   // -------------------------------------------------------------------
@@ -249,7 +249,7 @@
       estado.comuna = valor;
       agregarBurbujaUsuario(valor);
       limpiarComposer();
-      decirBot('Ya casi — déjanos tus datos para contactarte.', irAContacto);
+      decirBot('Ya casi: déjanos tus datos para contactarte.', irAContacto);
     };
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') seguir(); });
     input.addEventListener('input', () => {
@@ -425,7 +425,7 @@
 
     if (!iniciado) {
       iniciado = true;
-      decirBot('¡Hola! 👋', () => decirBot('¿En qué podemos ayudarte hoy?', irAIntent));
+      decirBot('Hola, ¿en qué podemos ayudarte hoy?', irAIntent);
     }
     scrollAlFondo();
   }

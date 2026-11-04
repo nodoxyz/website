@@ -46,5 +46,4 @@
   // a cada lado del punto se vea igual.
   texto(px - 18, py + 14, 'NODO', { ancla: 'end', tam: 40, esp: 12, clase: 'letras' });
   texto(px + 30, py + 14, 'XYZ', { ancla: 'start', tam: 40, esp: 12, clase: 'letras' });
-  texto(W - M - 16, H - M - 16, 'INGENIERÍA NODOXYZ LTDA.', { ancla: 'end', tam: 12, esp: 3, clase: 'razon' });
 })();

@@ -317,123 +317,6 @@ function initTelefonoPais() {
   };
 }
 
-// --- Nacionalidad: mismo dropdown de países con bandera que el teléfono,
-// reutilizando PAISES/PAISES_ORDENADOS/banderaUrl (nada de rehacer las
-// banderas) — pero sin código de marcado, el valor guardado es el nombre
-// del país. Chile queda como opción por defecto.
-function initNacionalidadPais() {
-  const campo = document.getElementById('nacionalidad-field');
-  const boton = document.getElementById('nacionalidad-btn');
-  const bandera = document.getElementById('nacionalidad-flag-img');
-  const nombreEl = document.getElementById('nacionalidad-nombre');
-  const hidden = document.getElementById('nacionalidad');
-  const lista = document.getElementById('nacionalidad-dropdown');
-  if (!campo || !boton || !bandera || !nombreEl || !hidden || !lista) return;
-
-  function aplicarPais([iso, , nombre]) {
-    hidden.value = nombre;
-    bandera.src = banderaUrl(iso);
-    bandera.alt = nombre;
-    nombreEl.textContent = nombre;
-    boton.setAttribute('aria-label', `Nacionalidad: ${nombre}. Elegir otra.`);
-  }
-
-  function abrir() {
-    lista.hidden = false;
-    boton.setAttribute('aria-expanded', 'true');
-  }
-  function cerrar() {
-    lista.hidden = true;
-    boton.setAttribute('aria-expanded', 'false');
-  }
-
-  function poblarLista() {
-    for (const [iso, , nombre] of PAISES_ORDENADOS) {
-      const li = document.createElement('li');
-      li.setAttribute('role', 'option');
-      li.dataset.iso = iso;
-      li.innerHTML = `<img src="${banderaUrl(iso)}" alt=""><span class="tel-opt-nombre">${nombre}</span>`;
-      li.addEventListener('click', () => {
-        aplicarPais([iso, null, nombre]);
-        cerrar();
-        boton.focus();
-      });
-      lista.appendChild(li);
-    }
-  }
-
-  boton.addEventListener('click', () => {
-    lista.hidden ? abrir() : cerrar();
-  });
-  document.addEventListener('click', (e) => {
-    if (!campo.contains(e.target)) cerrar();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') cerrar();
-  });
-
-  poblarLista();
-  aplicarPais(PAISES.find(([iso]) => iso === 'CL'));
-}
-
-// --- Licencia de conducir: dropdown propio con checkboxes (multi-choice) --
-// Mismo look que el dropdown de país (.pais-field/.pais-btn/.tel-dropdown),
-// pero cada opción es un checkbox. "No tiene" es excluyente con el resto,
-// igual que el patrón "Otro" de initOtroToggle: al marcarla se deshabilitan
-// las demás en vez de solo desmarcarlas.
-function initLicenciaDropdown() {
-  const campo = document.getElementById('licencia-field');
-  const boton = document.getElementById('licencia-btn');
-  const resumen = document.getElementById('licencia-resumen');
-  const hidden = document.getElementById('licencia_conducir');
-  const lista = document.getElementById('licencia-dropdown');
-  if (!campo || !boton || !resumen || !hidden || !lista) return;
-
-  const checkboxes = Array.from(lista.querySelectorAll('input[type="checkbox"]'));
-  const noTiene = checkboxes.find((cb) => cb.value === 'No tiene');
-
-  function actualizarResumen() {
-    const marcadas = checkboxes.filter((cb) => cb.checked).map((cb) => cb.value);
-    hidden.value = marcadas.join(', ');
-    resumen.textContent = marcadas.length ? marcadas.join(', ') : '-- Selecciona --';
-  }
-
-  checkboxes.forEach((cb) => {
-    cb.addEventListener('change', () => {
-      if (cb === noTiene) {
-        checkboxes.forEach((otra) => {
-          if (otra === noTiene) return;
-          otra.disabled = cb.checked;
-          if (cb.checked) otra.checked = false;
-        });
-      } else if (cb.checked) {
-        noTiene.checked = false;
-      }
-      actualizarResumen();
-    });
-  });
-
-  function abrir() {
-    lista.hidden = false;
-    boton.setAttribute('aria-expanded', 'true');
-  }
-  function cerrar() {
-    lista.hidden = true;
-    boton.setAttribute('aria-expanded', 'false');
-  }
-  boton.addEventListener('click', () => {
-    lista.hidden ? abrir() : cerrar();
-  });
-  document.addEventListener('click', (e) => {
-    if (!campo.contains(e.target)) cerrar();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') cerrar();
-  });
-
-  actualizarResumen();
-}
-
 // --- Dropzone de CV -------------------------------------------------------
 
 function initDropzone() {
@@ -570,9 +453,8 @@ function initFormulario() {
     btnEnviar.classList.toggle('cta--incompleto', progreso < 1);
   }
 
-  // Nombre y Email: se marcan de entrada si están vacíos (los 4 mínimos
-  // obligatorios — Nombre, Email, CV y Consentimiento — no esperan al
-  // submit para avisar) y se revalidan en cada tecla, no solo al salir.
+  // Nombre y Email: se marcan al salir del campo vacío o al enviar, y se
+  // revalidan en cada tecla.
   function validarNombreAhora() {
     const vacio = form.nombre.value.trim() === '';
     marcar(form.nombre, vacio);
@@ -595,6 +477,7 @@ function initFormulario() {
   }
 
   form.nombre.addEventListener('input', validarNombreAhora);
+  form.nombre.addEventListener('blur', validarNombreAhora);
   form.email.addEventListener('input', validarEmailAhora);
   form.email.addEventListener('blur', validarEmailAhora);
 
@@ -734,11 +617,9 @@ function initFormulario() {
     });
   }
 
-  validarNombreAhora();
-  validarEmailAhora();
-  validarConsentimientoAhora();
+  // Al abrir, el formulario queda limpio: cada campo avisa recién cuando la persona
+  // lo deja vacío o intenta enviar, nunca antes de que haya escrito algo.
   actualizarBotonEnviar();
-  if (!cvFile) marcarCvVacio();
 
   // Teléfono: red flag apenas el usuario sale del campo, igual que el email.
   telefonoInput.addEventListener('blur', () => {
@@ -809,9 +690,6 @@ function initFormulario() {
       region_id: selectRegion.value,
       comuna: selectComuna.value ? (selectComuna.options[selectComuna.selectedIndex]?.textContent || '') : '',
       comuna_id: selectComuna.value,
-      fecha_nacimiento: form.fecha_nacimiento.value,
-      nacionalidad: form.nacionalidad.value.trim(),
-      licencia_conducir: form.licencia_conducir.value,
       titulo_otro: form.titulo_otro.value.trim(),
       anios_experiencia: form.anios_experiencia.value,
       rubro_otro: form.rubro_otro.value.trim(),
@@ -902,7 +780,5 @@ function initOrdenCampos() {
   initOtroToggle('titulos-grid', 'titulos', 'titulo_otro_check', 'titulo_otro');
   initOtroToggle('rubros-grid', 'rubros', 'rubro_otro_check', 'rubro_otro');
   initFormulario();
-  initNacionalidadPais();
-  initLicenciaDropdown();
   initOrdenCampos();
 })();
