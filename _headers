@@ -1,0 +1,7 @@
+# Cabeceras de Cloudflare Pages para nodoxyz.cl.
+# CSS y JS se revalidan en cada visita: con el caché por defecto de Pages (4 horas) el navegador
+# mezclaba el HTML nuevo con la hoja de estilos anterior después de cada publicación (04-11-2026).
+/*.css
+  Cache-Control: public, max-age=0, must-revalidate
+/*.js
+  Cache-Control: public, max-age=0, must-revalidate
