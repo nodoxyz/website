@@ -16,3 +16,7 @@ kv_namespaces = [
 rules = [
   { type = "Text", globs = ["**/*.html"], fallthrough = true }
 ]
+
+# Aviso al equipo de cada envío (aviso-equipo.js). Varios destinatarios, separados por coma.
+[vars]
+AVISO_PARA = "contacto@nodoxyz.cl"

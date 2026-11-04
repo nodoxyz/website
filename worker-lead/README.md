@@ -92,3 +92,11 @@ Retención y borrado de leads no convertidos — la Ley 21.719 rige desde el
 01-12-2026. Por ahora los leads guardados en KV **no expiran solos**. Una
 vez que se defina el plazo, se puede usar `expirationTtl` en el
 `env.LEADS.put(...)` para que Cloudflare los borre automáticamente.
+
+## Aviso al equipo por correo (04-11-2026)
+
+Cada lead nuevo se avisa por correo con `../worker/aviso-equipo.js` (Resend), el mismo módulo
+que avisa los registros de profesionales. El destinatario está en `AVISO_PARA` de
+`wrangler.toml` (varios, separados por coma) y "Responder" le contesta a quien escribió. Para que
+salga, este Worker necesita su propio secret: `npx --yes wrangler@latest secret put RESEND_API_KEY --name nodoxyz-lead-widget`.
+Sin el secret el lead se guarda igual y el aviso no sale.

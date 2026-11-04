@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NodoXYZ</title>
-<meta name="description" content="NodoXYZ — Tasación, licitación, estructura y contabilidad.">
+<title>NodoXYZ · Oficina de cálculo estructural</title>
+<meta name="description" content="NodoXYZ, oficina de cálculo estructural en Santiago: cálculo y revisión estructural, BIM, inspección técnica de obra, permisos y tasaciones.">
 <link rel="icon" type="image/png" href="logo2_transparente.png">
+<script src="js/tema.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="site-header">
-  <a class="wordmark" href="#inicio">
-    <img class="logo" src="logos/nodo_xyz_logo_transparente.svg" alt="NodoXYZ">
-  </a>
+  <a class="marca" href="#inicio" aria-label="NodoXYZ, ir al inicio">NODO <i></i> XYZ</a>
   <nav>
     <a href="#servicios">Servicios</a>
+    <a href="#proyectos">Proyectos</a>
     <a href="#nosotros">Nosotros</a>
     <a href="#contacto">Contacto</a>
     <a href="profesionales.html" id="btn-registro-nav" class="nav-cta">Regístrate como profesional</a>
+    <button type="button" class="tema-btn" aria-label="Modo oscuro" aria-pressed="false">
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
   </nav>
 </header>
 
@@ -51,91 +55,111 @@
 
 <main>
 
-  <section class="hero" id="inicio">
-    <h1>Soluciones con ingeniería</h1>
-    <a class="cta" href="#contacto" id="btn-consulta-aqui">Consulta aquí</a>
-    <blockquote class="hero-quote">
-      <p>Dame un punto de apoyo y moveré el mundo.</p>
-      <cite>— Arquímedes</cite>
-    </blockquote>
-  </section>
-
-  <section class="servicios" id="servicios">
-    <p class="eyebrow">Servicios</p>
-    <div class="servicios-viewport">
-    <div class="grid">
-      <article class="card">
-        <h3>Cálculo<br>Estructural</h3>
-        <ul>
-          <li>Diseño y cálculo estructural</li>
-          <li>Análisis sísmico</li>
-          <li>Memorias de cálculo</li>
-          <li>Reforzamiento estructural</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Inspección<br>Técnica</h3>
-        <ul>
-          <li>Inspección técnica de obras</li>
-          <li>Control de calidad en terreno</li>
-          <li>Ensayos y certificaciones</li>
-          <li>Informes técnicos</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Construcción</h3>
-        <ul>
-          <li>Oficina técnica</li>
-          <li>Planos y dibujo técnico</li>
-          <li>Cubicaciones y presupuestos</li>
-          <li>Coordinación de especialidades</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Tasaciones y<br>Regularización</h3>
-        <ul>
-          <li>Tasación de propiedades</li>
-          <li>Regularización de viviendas</li>
-          <li>Permisos municipales</li>
-          <li>Recepción final de obras</li>
-        </ul>
-      </article>
-    </div>
-    </div>
-    <div class="servicios-dots" id="servicios-dots">
-      <button class="servicios-dot" type="button" data-i="0" aria-label="Cálculo Estructural"></button>
-      <button class="servicios-dot" type="button" data-i="1" aria-label="Inspección Técnica"></button>
-      <button class="servicios-dot" type="button" data-i="2" aria-label="Construcción"></button>
-      <button class="servicios-dot" type="button" data-i="3" aria-label="Tasaciones y Regularización"></button>
+  <section class="portada" id="inicio" aria-label="Portada">
+    <svg id="losa" viewBox="0 0 1188 520" role="img" aria-label="NODO y XYZ separados por un punto, con una losa en perspectiva que fuga hacia ese punto"></svg>
+    <div class="portada-pie">
+      <div>
+        <h1>Soluciones con ingeniería</h1>
+        <blockquote class="hero-quote">
+          <p>Dame un punto de apoyo y moveré el mundo.</p>
+          <cite>Arquímedes</cite>
+        </blockquote>
+      </div>
+      <a class="cta" href="#contacto" id="btn-consulta-aqui">Consulta aquí</a>
     </div>
   </section>
 
-  <section class="nosotros" id="nosotros">
-    <p class="eyebrow">Nosotros</p>
-    <h2>Sobre NodoXYZ</h2>
-    <div class="nosotros-texto">
-      <p>Somos una oficina de ingeniería estructural dedicada al diseño, cálculo,
-      inspección y gestión técnica de proyectos de edificación, desde los
-      estudios preliminares hasta la recepción final.</p>
-      <p>Colaboramos con arquitectos, constructoras e inmobiliarias, integrando
-      rigor normativo y herramientas digitales para resolver con claridad las
-      exigencias estructurales y regulatorias de cada obra.</p>
+  <section class="seccion" id="servicios">
+    <div class="seccion-cab"><h2 class="h-sec">SERVICIOS</h2><p class="bajada">Ingeniería del proyecto y de la obra, en un mismo equipo.</p></div>
+    <div class="grupo-serv">
+      <span class="rot">Proyecto</span>
+      <ol class="grilla">
+        <li><b>01</b><h3>Cálculo estructural</h3><ul class="incluye"><li>Hormigón, acero y albañilería</li><li>Análisis sísmico y de viento</li><li>Memoria y planos de permiso</li><li>Reforzamientos</li></ul></li>
+        <li><b>02</b><h3>Revisión estructural</h3><ul class="incluye"><li>Proyectos de terceros</li><li>Memoria, planos y modelo</li><li>Informe de observaciones</li><li>Estructuras existentes</li></ul></li>
+        <li><b>03</b><h3>Detallamiento estructural</h3><ul class="incluye"><li>Armaduras</li><li>Conexiones</li><li>Planos de fabricación</li><li>Detalles de terreno</li></ul></li>
+        <li><b>04</b><h3>Modelación BIM y planimetría</h3><ul class="incluye"><li>Modelos por especialidad</li><li>Planimetría</li><li>Coordinación de especialidades</li><li>Cubicaciones</li></ul></li>
+      </ol>
+    </div>
+    <div class="grupo-serv">
+      <span class="rot">Obra y trámites</span>
+      <ol class="grilla" start="5">
+        <li><b>05</b><h3>Inspección técnica de obra</h3><ul class="incluye"><li>Visitas a terreno</li><li>Control de calidad</li><li>Estados de pago</li><li>Libro de obra</li></ul></li>
+        <li><b>06</b><h3>Proyectos sanitarios</h3><ul class="incluye"><li>Factibilidad</li><li>Agua potable</li><li>Alcantarillado</li><li>Tramitación sanitaria</li></ul></li>
+        <li><b>07</b><h3>Permisos y regularizaciones</h3><ul class="incluye"><li>Permiso de edificación</li><li>Ampliaciones</li><li>Recepción definitiva</li><li>Gestión municipal</li></ul></li>
+        <li><b>08</b><h3>Tasaciones inmobiliarias</h3><ul class="incluye"><li>Viviendas</li><li>Locales y oficinas</li><li>Estudio de mercado</li><li>Informe de valor comercial</li></ul></li>
+      </ol>
     </div>
   </section>
 
-  <div class="section-group">
-    <section class="contacto" id="contacto">
-      <p class="eyebrow">Contacto</p>
-      <a class="mail" href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a>
-    </section>
-    <footer class="site-footer">
-      <span>NodoXYZ — Ingeniería y Construcción © 2026</span>
-      <nav class="footer-links">
-        <a href="legal/privacidad.html">Privacidad</a>
-        <a href="legal/terminos.html">Términos</a>
-      </nav>
-    </footer>
-  </div>
+  <section class="seccion" id="proyectos">
+    <div class="seccion-cab"><h2 class="h-sec">PROYECTOS</h2><p class="bajada">Obras de 2026.</p></div>
+    <div class="proyectos">
+      <article class="proy">
+        <div class="dibujo"><img src="img/proyectos/etabs-marina.webp" alt="Modelo ETABS de Marina de Gaete 706-710: muros de albañilería confinada de dos pisos" loading="lazy" width="1400" height="1151"></div>
+        <span class="rot">Proyecto 01</span>
+        <h3>Marina de Gaete 706-710</h3>
+        <p class="nombre">INVERSIONES HESARA LIMITADA</p>
+        <p class="lugar">Santiago · 2026 · Comercial</p>
+        <dl class="ficha"><div><dt>SERVICIO</dt><dd>Revisión y cálculo estructural</dd></div><div><dt>ESTRUCTURA</dt><dd>Albañilería confinada, 2 pisos</dd></div><div><dt>SUPERFICIE</dt><dd>400 m² aprox.</dd></div></dl>
+      </article>
+      <article class="proy">
+        <div class="dibujo"><img src="img/proyectos/iso-pabellon.webp" alt="Isométrico del Pabellón de nichos XL: cajón de muros y losas de hormigón sobre su base" loading="lazy" width="1400" height="1050"></div>
+        <span class="rot">Proyecto 02</span>
+        <h3>Pabellón de nichos XL</h3>
+        <p class="nombre">CORPORACIÓN SOCIAL Y CULTURAL DE CONCEPCIÓN, SEMCO</p>
+        <p class="lugar">Concepción · 2026 · Cementerio</p>
+        <dl class="ficha"><div><dt>SERVICIO</dt><dd>Cálculo estructural y BIM</dd></div><div><dt>ESTRUCTURA</dt><dd>Hormigón armado, 160 nichos</dd></div><div><dt>HORMIGÓN</dt><dd>192,6 m³ cubicados</dd></div></dl>
+      </article>
+      <article class="proy">
+        <div class="dibujo"><img src="img/proyectos/iso-muro.webp" alt="Perspectiva del muro acústico: los pilares y paneles se alejan hasta un punto de fuga" loading="lazy" width="1400" height="1050"></div>
+        <span class="rot">Proyecto 03</span>
+        <h3>Muro acústico, Estadio Municipal de Puente Alto</h3>
+        <p class="nombre">MUNICIPALIDAD DE PUENTE ALTO</p>
+        <p class="lugar">Puente Alto · 2026 · Deportivo</p>
+        <dl class="ficha"><div><dt>SERVICIO</dt><dd>Cálculo estructural</dd></div><div><dt>ESTRUCTURA</dt><dd>Pilares de acero cada 3 m</dd></div><div><dt>DIMENSIÓN</dt><dd>170 m de largo, 6 m de alto</dd></div></dl>
+      </article>
+      <article class="proy">
+        <div class="dibujo"><img src="img/proyectos/iso-plataforma.webp" alt="Isométrico de la plataforma de acero para equipos de climatización" loading="lazy" width="1400" height="1050"></div>
+        <span class="rot">Proyecto 04</span>
+        <h3>Plataforma para equipos de climatización</h3>
+        <p class="nombre">MR JOY</p>
+        <p class="lugar">Las Condes · 2026 · Comercial</p>
+        <dl class="ficha"><div><dt>SERVICIO</dt><dd>Cálculo estructural</dd></div><div><dt>ESTRUCTURA</dt><dd>Acero en perfiles cajón</dd></div><div><dt>DIMENSIÓN</dt><dd>3,90 × 0,60 m</dd></div></dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="seccion" id="nosotros">
+    <div class="seccion-cab"><h2 class="h-sec">SOMOS NODOXYZ</h2></div>
+    <div class="somos">
+      <p class="intro">NodoXYZ es una oficina de cálculo estructural con base en Santiago. Calculamos, revisamos e inspeccionamos estructuras de hormigón armado, acero y albañilería, desde el anteproyecto hasta la recepción de la obra. Trabajamos con arquitectos, constructoras e inmobiliarias como su contraparte técnica.</p>
+      <div>
+        <p class="lema">Un equipo de ingenieros civiles dedicado a que cada estructura quede bien calculada y bien construida.</p>
+        <ul class="pilares">
+          <li class="pilar"><div class="r"><span>MISIÓN</span><b>1</b></div><p>Brindar soluciones integrales de ingeniería civil y estructural en Chile, con rigor técnico y procesos eficientes.</p></li>
+          <li class="pilar"><div class="r"><span>VISIÓN</span><b>2</b></div><p>Ser la contraparte técnica de confianza de quienes diseñan y construyen, por la claridad y el respaldo de cada entrega.</p></li>
+          <li class="pilar"><div class="r"><span>MÉTODO</span><b>3</b></div><p>Entregas claras y coherentes, que se entienden igual en la oficina y en la obra.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id="contacto">
+    <div class="seccion-cab"><h2 class="h-sec">CONTACTO</h2><p class="bajada">Conversemos el próximo proyecto.</p></div>
+    <ul class="fichas">
+      <li><span class="rot">Oficina</span><h3>Ingeniería NodoXYZ Ltda.</h3><p class="cargo">Ñuñoa, Santiago</p><p><a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a></p></li>
+      <li><span class="rot">Socio</span><h3>Bruno Franco Sentis</h3><p class="cargo">Ingeniero Civil en Obras Civiles</p><p><a href="mailto:bruno.franco@nodoxyz.cl">bruno.franco@nodoxyz.cl</a></p></li>
+      <li><span class="rot">Socio</span><h3>Cristofer Bordones Armijo</h3><p class="cargo">Ingeniero Civil en Obras Civiles</p><p><a href="mailto:cristofer.bordones@nodoxyz.cl">cristofer.bordones@nodoxyz.cl</a></p></li>
+    </ul>
+  </section>
+
+  <footer class="site-footer">
+    <span>Ingeniería NodoXYZ Ltda. · RUT 78.471.316-4 · Ñuñoa, Santiago · © 2026</span>
+    <nav class="footer-links" aria-label="Documentos legales">
+      <a href="legal/privacidad.html">Privacidad</a>
+      <a href="legal/terminos.html">Términos</a>
+    </nav>
+  </footer>
 
 </main>
 
@@ -203,7 +227,7 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="data/localidades.js"></script>
 <script src="data/bot-config.js"></script>
-<script src="js/servicios-carousel.js"></script>
+<script src="js/portada.js"></script>
 <script src="js/chat-widget-guiado.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

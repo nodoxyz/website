@@ -1,425 +1,320 @@
+/* Lenguaje del brochure (Brochure_NodoXYZ, noviembre de 2026): hoja blanca, línea fina malva
+   grisácea, tinta casi negra e Inter liviana. En oscuro, tinta clara sobre papel grafito con el
+   mismo malva aclarado. Todo color sale de estas variables; js/tema.js fija data-theme en <html>
+   (lo que eligió la persona o, si no eligió, el tema del sistema). */
 :root {
-  --black: #0b0b0c;
-  --black-soft: #141416;
-  --ivory: #f5f1e8;
-  --muted: #b8b4aa;
-  --gold: #c7a252;
-  --gold-dim: #8a723c;
-  --serif: "Playfair Display", Georgia, serif;
-  --sans: "Inter", system-ui, sans-serif;
+  --papel: #ffffff;
+  --superficie: #f7f5f9;
+  --tinta: #0b0b0c;
+  --texto: #3e3a46;
+  --texto-2: #706a79;
+  --linea: #b4a6c0;
+  --punto: #7d4f73;
+  --acento: #6e5a80;
+  --acento-suave: #9a87ad;
+  --error: #b4413a;
+  --ok: #3f7a4f;
+  --sombra: rgba(40, 28, 52, 0.16);
+  --letra: "Inter", "Segoe UI", system-ui, sans-serif;
+  --sans: var(--letra);
+  --serif: var(--letra);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #16141a;
+    --superficie: #1d1a22;
+    --tinta: #f1eef4;
+    --texto: #cdc6d4;
+    --texto-2: #9b93a5;
+    --linea: #4d4458;
+    --punto: #c891bd;
+    --acento: #b9a5cc;
+    --acento-suave: #8a7a9c;
+    --error: #e0866b;
+    --ok: #8fbf8f;
+    --sombra: rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #16141a;
+  --superficie: #1d1a22;
+  --tinta: #f1eef4;
+  --texto: #cdc6d4;
+  --texto-2: #9b93a5;
+  --linea: #4d4458;
+  --punto: #c891bd;
+  --acento: #b9a5cc;
+  --acento-suave: #8a7a9c;
+  --error: #e0866b;
+  --ok: #8fbf8f;
+  --sombra: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 
 body {
-  background: var(--black);
-  color: var(--ivory);
-  font-family: var(--sans);
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--letra);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 
-.eyebrow {
-  font-family: var(--sans);
-  font-size: 1rem;
-  letter-spacing: 0.25em;
+h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); text-wrap: balance; }
+
+.eyebrow, .rot {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 1rem;
+  color: var(--acento);
 }
 
-h1, h2, h3 {
-  font-family: var(--serif);
-  font-weight: 600;
-  color: var(--ivory);
-}
-
-/* Header */
+/* Cabecera */
 
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
   padding: 1.1rem 6vw;
-  background: var(--black);
-  border-bottom: 1px solid rgba(199, 162, 82, 0.18);
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
 }
 
-.wordmark {
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  display: block;
-  margin-right: auto;
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: var(--tinta);
 }
 
-.wordmark:hover {
-  color: var(--muted);
-}
-
-.logo {
-  height: 32px;
-  width: auto;
-  opacity: 0.7;
-  transition: opacity 0.2s ease, filter 0.2s ease;
-}
-
-.wordmark:hover .logo {
-  opacity: 1;
-  filter: grayscale(0);
-}
-
-/* Logo activo cuando estás en el hero */
-.hero:target ~ .site-header .wordmark,
-.site-header .wordmark.active {
-  opacity: 0.5;
-}
+.marca i { width: 6px; height: 6px; border-radius: 50%; background: var(--punto); display: block; }
 
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
-  row-gap: 0.5rem;
-  gap: 2.25rem;
+  gap: 0.75rem 1.75rem;
 }
 
 .site-header nav a {
-  font-size: 0.9rem;
-  color: var(--muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--texto);
   transition: color 0.2s ease;
 }
 
-.site-header nav a:hover { color: var(--gold); }
+.site-header nav a:hover { color: var(--acento); }
 
 .site-header nav a.nav-cta {
-  color: var(--gold);
-  font-weight: 500;
-  font-size: 0.8rem;
-  padding-left: 1.5rem;
-  border-left: 1px solid rgba(199, 162, 82, 0.2);
-}
-
-.site-header nav a.nav-cta:hover {
-  color: var(--gold-dim);
-}
-
-.site-header nav a.nav-cta--active {
-  color: var(--gold);
-  font-weight: 600;
-  border-bottom: 1px solid var(--gold);
-}
-
-
-/* Hero */
-
-.hero {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 100vh;
-  min-height: 100svh;
-  scroll-snap-align: start;
-  padding: 6rem 6vw 4rem;
-  max-width: none;
-}
-
-.hero h1 {
-  font-size: clamp(2.25rem, 5.5vw, 4rem);
-  line-height: 1.2;
-  margin-bottom: 2.5rem;
-  max-width: 18ch;
-  font-weight: 500;
-}
-
-.hero .lead {
-  color: var(--muted);
-  font-size: 1.15rem;
-  max-width: 36rem;
-  margin: 0 0 2.5rem;
-}
-
-.cta {
-  display: inline-block;
-  padding: 0.85rem 1.75rem;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--acento);
+  color: var(--acento);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.cta:hover {
-  background: var(--gold);
-  color: var(--black);
+.site-header nav a.nav-cta:hover,
+.site-header nav a.nav-cta--active {
+  background: var(--acento);
+  color: var(--papel);
 }
 
-/* Botón del hero ("Consulta aquí"): relleno dorado sólido por defecto, no
-   solo al pasar el mouse — más destacado desde el primer momento. Se
-   escopa a .hero para no afectar el botón del formulario de profesionales
-   (misma clase .cta), que tiene su propio estado de progreso. */
-.hero .cta {
-  background: var(--gold);
-  color: var(--black);
+.tema-btn {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: inline-grid;
+  place-items: center;
+  background: none;
+  border: 1px solid var(--linea);
+  color: var(--texto);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.hero .cta:hover {
-  background: var(--gold-dim);
-  border-color: var(--gold-dim);
-  color: var(--black);
+.tema-btn:hover { color: var(--acento); border-color: var(--acento); }
+.tema-btn svg { width: 1rem; height: 1rem; }
+.tema-btn .sol { display: none; }
+:root[data-theme="dark"] .tema-btn .sol { display: block; }
+:root[data-theme="dark"] .tema-btn .luna { display: none; }
+
+/* Botones */
+
+.cta {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--acento);
+  color: var(--acento);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Hero — cita Arquímedes */
+.cta:hover { background: var(--acento); color: var(--papel); }
 
-.hero-quote {
-  position: absolute;
-  bottom: 2rem;
-  right: 6vw;
-  text-align: right;
-  white-space: nowrap;
-  border: none;
-  margin: 0;
-}
+/* "Consulta aquí": relleno de tinta desde el inicio. Se escopa a la portada para no tocar
+   el botón del formulario de profesionales (misma clase .cta), que tiene su propio progreso. */
+.portada .cta { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
+.portada .cta:hover { background: var(--acento); border-color: var(--acento); }
 
-.hero-quote p {
-  font-family: var(--serif);
-  font-size: 0.9rem;
-  font-style: italic;
-  line-height: 1.4;
-  color: var(--gold-dim);
-}
+/* Portada: la losa en perspectiva del brochure (la dibuja js/portada.js) */
 
-.hero-quote cite {
-  display: block;
-  font-family: var(--serif);
-  font-size: 0.75rem;
-  font-style: italic;
-  color: var(--gold-dim);
-  margin-top: 0.3rem;
-  opacity: 0.5;
-}
+.portada { padding: 2rem 6vw 0; }
+.portada svg { width: 100%; height: auto; display: block; }
+.portada .losa { stroke: var(--linea); fill: none; stroke-linecap: round; }
+.portada .fina { stroke-width: 0.6; }
+.portada .letras { fill: var(--tinta); font-family: var(--letra); }
+.portada .razon { fill: var(--texto-2); font-family: var(--letra); }
+.portada .punto { fill: var(--punto); }
 
-/* Sections */
-
-section {
-  min-height: 100vh;
-  min-height: 100svh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 6rem 8vw;
-  border-top: 1px solid rgba(199, 162, 82, 0.10);
-}
-
-section h2 {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  font-weight: 500;
-  margin-bottom: 2rem;
-}
-
-/* Servicios grid */
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-/* Sin caja/fondo: las tarjetas quedan a ras del negro de la página,
-   separadas solo por un filete dorado tenue — más sobrio que el bloque
-   con background propio que tenía antes. */
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 0 2rem;
-  border-right: 1px solid rgba(199, 162, 82, 0.15);
-}
-
-@media (min-width: 641px) {
-  .card:first-child {
-    padding-left: 0;
-  }
-
-  .card:last-child {
-    padding-right: 0;
-    border-right: none;
-  }
-}
-
-/* Servicios: con 4 tarjetas de largo de texto variable, el contenido puede
-   superar el alto de pantalla en laptops — centrarlo verticalmente
-   (comportamiento por defecto de `section`) lo recorta arriba (tapado por
-   el header) y abajo a la vez. Ancorado arriba: siempre se ve completo el
-   título "Servicios", y si sobra contenido, se sigue con scroll normal.
-   El header ahora es más chico (~5.4rem de alto) — 5.5rem de sobra alcanza. */
-.servicios {
-  justify-content: flex-start;
-  padding-top: 5.5rem;
-}
-
-.servicios .eyebrow {
-  font-size: 0.85rem;
-  margin-bottom: 2.5rem;
-}
-
-.card h3 {
-  font-size: 1.3rem;
-  line-height: 1.1;
-  min-height: 2.9rem;
-  color: var(--ivory);
-  margin: 0;
-  letter-spacing: 0.02em;
-}
-
-.card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.card li {
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.3;
-  padding-left: 1.1rem;
-  margin-bottom: 0.65rem;
-  position: relative;
-}
-
-.card li:last-child {
-  margin-bottom: 0;
-}
-
-.card li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 4px;
-  height: 4px;
-  background: var(--gold-dim);
-  border-radius: 50%;
-}
-
-/* Nosotros */
-
-.nosotros-texto {
-  max-width: 42rem;
-}
-
-.nosotros-texto p {
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-}
-
-.nosotros-texto p:last-child {
-  margin-bottom: 0;
-}
-
-/* Contacto */
-
-.contacto {
-  align-items: center;
-  text-align: center;
-}
-
-.contacto .mail {
-  font-family: var(--serif);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 600;
-  color: var(--ivory);
-  letter-spacing: 0.01em;
-  border-bottom: 1px solid var(--gold-dim);
-  padding-bottom: 0.3rem;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.contacto .mail:hover {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
-}
-
-/* Section group (contacto + footer) */
-
-.section-group {
-  min-height: 100vh;
-  min-height: 100svh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid rgba(199, 162, 82, 0.10);
-}
-
-.section-group .contacto {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 6rem 8vw;
-  border-top: none;
-  min-height: auto;
-  scroll-snap-align: none;
-}
-
-/* Footer */
-
-.site-footer {
-  padding: 1.5rem 8vw;
-  border-top: 1px solid rgba(199, 162, 82, 0.15);
+.portada-pie {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: 0.75rem;
+  gap: 1.5rem 3rem;
+  flex-wrap: wrap;
+  padding: 1.75rem 0 3.5rem;
+}
+
+.portada-pie h1 { font-weight: 200; font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.15; letter-spacing: 0.01em; }
+
+.hero-quote { margin: 0.6rem 0 0; border: none; }
+.hero-quote p { font-size: 0.95rem; font-weight: 300; font-style: italic; color: var(--texto); }
+.hero-quote cite { display: block; margin-top: 0.2rem; font-size: 0.72rem; font-style: normal; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acento); }
+
+/* Secciones */
+
+.seccion { padding: 4.5rem 6vw; border-top: 1px solid var(--linea); }
+
+.seccion-cab { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem 2.5rem; margin-bottom: 2.5rem; }
+
+.h-sec {
+  font-weight: 200;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--acento);
+}
+
+.bajada { font-size: 1rem; font-weight: 300; color: var(--texto); }
+
+/* Servicios: grilla numerada como las páginas 3 y 4 del brochure */
+
+.grupo-serv + .grupo-serv { margin-top: 2.5rem; }
+.grupo-serv > .rot { display: block; margin-bottom: 0.9rem; }
+
+.grilla { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.grilla > li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.4rem 1.25rem 0.4rem;
+  border-top: 1px solid var(--linea);
+  border-left: 1px solid var(--linea);
+}
+
+.grilla > li:nth-child(4n+1) { border-left: 0; padding-left: 0; }
+.grilla b { font-size: 2.5rem; font-weight: 200; line-height: 1; color: var(--acento); font-variant-numeric: tabular-nums; }
+.grilla h3 { font-size: 1.05rem; line-height: 1.3; }
+
+.incluye { list-style: none; padding-top: 0.75rem; border-top: 1px solid var(--linea); display: grid; gap: 0.4rem; }
+.incluye li { font-size: 0.88rem; font-weight: 300; color: var(--texto); }
+.incluye li::before { content: ""; display: inline-block; width: 10px; height: 1px; background: var(--linea); vertical-align: middle; margin-right: 0.5rem; }
+
+/* Proyectos: cada ficha ocupa 6 filas de la grilla madre (subgrid), así dibujo, número, título,
+   mandante, lugar y ficha quedan a la misma altura en las dos columnas. */
+
+/* El espacio entre filas es uno solo (madre y fichas): si difieren, Chromium reparte la diferencia
+   dentro de cada ficha. La separación entre una fila de proyectos y la siguiente es el margen de la ficha. */
+.proyectos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; row-gap: 0.75rem; }
+
+.proy { display: grid; grid-row: span 6; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.proy > * { margin: 0; min-width: 0; }
+.proy > .rot { align-self: end; margin-top: 0.25rem; }
+.proy h3 { font-size: 1.25rem; font-weight: 300; line-height: 1.3; }
+.proy .nombre { font-size: 0.75rem; letter-spacing: 0.14em; font-weight: 500; }
+.proy .lugar { font-size: 0.88rem; font-weight: 300; color: var(--texto-2); }
+
+/* La caja manda el tamaño y el dibujo se ajusta adentro: una imagen grande no estira la columna. */
+.dibujo { position: relative; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid var(--linea); background: var(--papel); }
+.dibujo img { position: absolute; inset: 18px; width: calc(100% - 36px); height: calc(100% - 36px); max-width: none; object-fit: contain; }
+/* Los dibujos son línea negra sobre blanco: en oscuro se invierten y el negro se funde con el papel. */
+:root[data-theme="dark"] .dibujo img { filter: invert(1) hue-rotate(180deg); mix-blend-mode: lighten; opacity: 0.9; }
+
+/* Ficha en filas: el valor tiene el ancho de la tarjeta y queda en una sola línea. */
+.ficha { align-self: start; margin-bottom: 2.75rem !important; padding-top: 0.9rem; border-top: 1px solid var(--linea); display: grid; gap: 0.5rem; }
+.ficha div { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: baseline; gap: 0.75rem; }
+.ficha dt { font-size: 0.62rem; letter-spacing: 0.18em; color: var(--acento); }
+.ficha dd { font-size: 0.88rem; font-weight: 300; white-space: nowrap; }
+
+/* Somos NodoXYZ */
+
+.somos { display: grid; grid-template-columns: 38fr 52fr; gap: 3.5rem; align-items: start; }
+.somos .intro { font-size: 1rem; line-height: 1.9; font-weight: 300; color: var(--texto); max-width: 60ch; }
+.somos .lema { margin-bottom: 1.5rem; font-size: 1.35rem; line-height: 1.45; font-weight: 300; text-wrap: balance; }
+
+.pilares { list-style: none; display: grid; gap: 1rem; }
+.pilar { display: grid; grid-template-columns: 150px 1fr; border: 1px solid var(--linea); min-height: 84px; }
+.pilar .r { display: flex; align-items: center; justify-content: center; gap: 0.75rem; border-right: 1px solid var(--linea); }
+.pilar .r span { font-size: 0.68rem; letter-spacing: 0.14em; color: var(--acento); }
+.pilar .r b { font-size: 2.5rem; font-weight: 200; line-height: 1; color: var(--acento); }
+.pilar p { align-self: center; padding: 0.75rem 1.5rem; font-size: 0.94rem; line-height: 1.6; font-weight: 300; }
+
+/* Contacto */
+
+.fichas { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fichas > li { display: grid; gap: 0.35rem; align-content: start; padding: 1.4rem 1.25rem 0; border-top: 1px solid var(--linea); border-left: 1px solid var(--linea); }
+.fichas > li:first-child { border-left: 0; padding-left: 0; }
+.fichas h3 { margin: 0.35rem 0 0.1rem; font-size: 1.05rem; }
+.fichas p { font-size: 0.88rem; font-weight: 300; }
+.fichas .cargo { color: var(--texto-2); }
+.fichas a { border-bottom: 1px solid var(--linea); transition: color 0.2s ease, border-color 0.2s ease; }
+.fichas a:hover { color: var(--acento); border-color: var(--acento); }
+
+/* Pie */
+
+.site-footer {
+  padding: 1.4rem 6vw;
+  border-top: 1px solid var(--linea);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  color: var(--texto-2);
+  font-size: 0.78rem;
   letter-spacing: 0.02em;
 }
 
-.site-footer .footer-links {
-  display: flex;
-  gap: 1rem;
-}
+.site-footer .footer-links { display: flex; gap: 1.25rem; }
+.site-footer .footer-links a { color: var(--texto); border-bottom: 1px solid var(--linea); transition: color 0.2s ease; }
+.site-footer .footer-links a:hover { color: var(--acento); }
 
-.site-footer .footer-links a {
-  color: var(--muted);
-  transition: color 0.2s ease;
-}
-
-.site-footer .footer-links a:hover {
-  color: var(--gold);
-}
-
-/* Social rail — íconos fijos a la derecha, visibles en toda lámina (solo desktop) */
+/* Redes: íconos fijos a la derecha. Centrado vertical real (7 íconos de 2.1rem + 6 gaps de
+   1.1rem = 21.3rem; la mitad es 10.65rem), nunca a menos de 6rem del borde superior para no
+   quedar bajo la cabecera en pantallas bajas. */
 
 .social-rail {
   position: fixed;
   right: 2.25rem;
-  /* Centrado vertical real (7 íconos de 2.1rem + 6 gaps de 1.1rem = 21.3rem
-     de alto, la mitad es 10.65rem) — pero nunca a menos de 7rem del borde
-     superior, para que en pantallas más bajas (laptops) no quede tapado
-     por el header fijo. Sin el max(), en esas pantallas el primer ícono
-     terminaba a medias detrás del header. */
-  top: max(7rem, calc(50% - 10.65rem));
+  top: max(6rem, calc(50% - 10.65rem));
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -433,129 +328,65 @@ section h2 {
   justify-content: center;
   width: 2.1rem;
   height: 2.1rem;
-  border: 1px solid var(--gold-dim);
+  border: 1px solid var(--linea);
   border-radius: 50%;
-  color: var(--gold);
+  background: var(--papel);
+  color: var(--acento);
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.social-rail svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  fill: currentColor;
+.social-rail svg { width: 0.95rem; height: 0.95rem; fill: currentColor; }
+
+.social-rail a:hover { background: var(--acento); color: var(--papel); border-color: var(--acento); transform: scale(1.15); }
+
+/* Con el riel de redes a la derecha, el contenido deja ese margen libre en escritorio. */
+@media (min-width: 641px) {
+  .portada, .seccion { padding-right: calc(6vw + 3rem); }
 }
 
-.social-rail a:hover {
-  background: var(--gold);
-  color: var(--black);
-  border-color: var(--gold);
-  transform: scale(1.15);
-}
-
-/* Responsive */
+/* Tableta y teléfono */
 
 @media (max-width: 900px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
+  .grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grilla > li:nth-child(4n+1) { border-left: 1px solid var(--linea); padding-left: 1.25rem; }
+  .grilla > li:nth-child(2n+1) { border-left: 0; padding-left: 0; }
+  .proyectos, .somos { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
-  .site-header { flex-direction: column; align-items: center; gap: 1rem; }
-  .wordmark { margin-right: 0; }
-  .site-header nav { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
-  .site-header nav a.nav-cta { padding-left: 0; border-left: none; }
-  .hero { padding: 14rem 6vw 8rem; justify-content: flex-start; }
-  .hero-quote { position: relative; bottom: auto; right: auto; text-align: center; margin-top: 3rem; white-space: normal; }
-  .hero-quote p { font-size: 1rem; }
-  section { padding: 4rem 6vw; }
-  .section-group .contacto { padding: 4rem 6vw; }
-  .site-footer { padding: 1.5rem 6vw; flex-direction: column; gap: 0.75rem; text-align: center; }
-  .site-footer .footer-links { justify-content: center; }
+  .site-header { justify-content: center; }
+  .site-header nav { justify-content: center; gap: 0.6rem 1.1rem; }
+  .portada, .seccion, .site-footer { padding-left: 1rem; padding-right: 1rem; }
+  .seccion { padding-top: 3rem; padding-bottom: 3rem; }
+  .grilla, .fichas { grid-template-columns: 1fr; }
+  .grilla > li, .fichas > li { border-left: 0 !important; padding-left: 0 !important; }
+  .pilar { grid-template-columns: 96px 1fr; }
+  .ficha div { grid-template-columns: 92px minmax(0, 1fr); }
+  .site-footer { flex-direction: column; text-align: center; }
 
-  /* Nosotros: igual que el hero, el header fijo (apilado en columna en
-     mobile) tapa el contenido si la sección solo se centra verticalmente
-     sin dejar espacio de por sí — se fija el inicio bajo el header. */
-  .nosotros { padding: 13.5rem 6vw 4rem; justify-content: flex-start; }
-  .nosotros-texto p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; }
-
-  /* Servicios en mobile: carrusel de una tarjeta a la vez (en vez de las 4
-     apiladas verticalmente) para que título + bullets quepan en una sola
-     pantalla, igual que en desktop. JS (servicios-carousel.js) mueve
-     .grid con transform y hace avanzar automáticamente / al hacer clic.
-     Mismo motivo que hero/nosotros: el header fijo se apila en columna en
-     mobile y tapa el contenido si la sección solo se centra verticalmente
-     sin dejar espacio fijo arriba — se fija el inicio bajo el header. */
-  .servicios { padding: 13.5rem 6vw 4rem; justify-content: flex-start; }
-  .servicios-viewport { overflow: hidden; }
-  .grid {
-    display: flex;
-    grid-template-columns: none;
-    background: none;
-    gap: 0;
-    touch-action: pan-y;
-  }
-  .card {
-    flex: 0 0 100%;
-    width: 100%;
-    padding: 2rem 0.25rem;
-    transition: none;
-    cursor: pointer;
-  }
-  .card:hover { background: var(--black-soft); }
-
-  .servicios-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: 1.75rem;
-  }
-  .servicios-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    border: none;
-    padding: 0;
-    background: rgba(199, 162, 82, 0.3);
-    cursor: pointer;
-  }
-  .servicios-dot.activo {
-    background: var(--gold);
-  }
-}
-
-@media (min-width: 641px) {
-  .servicios-dots { display: none; }
-}
-
-@media (max-width: 640px) {
-  /* En mobile el rail pasa de vertical/derecha a una barra horizontal fija
-     abajo, visible en cada sección (igual que el rail en desktop). El
-     footer gana margen extra para no quedar tapado al llegar al final. */
+  /* En teléfono el riel pasa a una barra fija abajo; el pie gana margen para no quedar tapado. */
   .social-rail {
     top: auto;
     bottom: 0;
     left: 0;
     right: 0;
-    transform: none;
     flex-direction: row;
     justify-content: center;
     gap: 0.55rem;
     padding: 0.55rem 4vw calc(0.55rem + env(safe-area-inset-bottom, 0px));
-    background: var(--black);
-    border-top: 1px solid rgba(199, 162, 82, 0.15);
+    background: var(--papel);
+    border-top: 1px solid var(--linea);
     z-index: 6;
   }
-  .social-rail a {
-    width: 2rem;
-    height: 2rem;
-  }
-  .social-rail svg {
-    width: 0.95rem;
-    height: 0.95rem;
-  }
-  .site-footer {
-    margin-bottom: 3.5rem;
-  }
+  .social-rail a { width: 2rem; height: 2rem; }
+  .site-footer { margin-bottom: 3.5rem; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
 
 /* Registro de profesionales — sin hero, el nav ya indica dónde estás
    (link activo); el formulario arranca directo bajo el header. */
@@ -575,7 +406,7 @@ section h2 {
 .registro-form-section {
   min-height: auto;
   scroll-snap-align: none;
-  padding: 7rem 6vw 5rem;
+  padding: 3rem 6vw 5rem;
   border-top: none;
 }
 
@@ -598,10 +429,10 @@ section h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(199, 162, 82, 0.15);
-  border: 1px solid var(--gold);
+  background: color-mix(in srgb, var(--acento) 15%, transparent);
+  border: 1px solid var(--acento);
   border-radius: 50%;
-  color: var(--gold);
+  color: var(--acento);
   font-size: 0.65rem;
   font-style: italic;
   font-family: var(--serif);
@@ -613,8 +444,8 @@ section h2 {
 .info-reopen-corner-btn:hover,
 .info-reopen-corner-btn:focus-visible {
   outline: none;
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
 }
 
 .form-section {
@@ -626,7 +457,7 @@ section h2 {
 
 .form-section + .form-section {
   padding-top: 1.1rem;
-  border-top: 1px solid rgba(199, 162, 82, 0.12);
+  border-top: 1px solid color-mix(in srgb, var(--acento) 12%, transparent);
 }
 
 .form-section legend {
@@ -634,7 +465,7 @@ section h2 {
   font-size: 0.78rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acento);
   margin-bottom: 0.65rem;
   padding: 0;
 }
@@ -665,19 +496,19 @@ section h2 {
   align-items: stretch;
   width: 100%;
   min-width: 0;
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.28);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 28%, transparent);
   border-radius: 5px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .tel-field:focus-within {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px var(--gold-glow, rgba(199, 162, 82, 0.15));
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px var(--acento-halo, color-mix(in srgb, var(--acento) 15%, transparent));
 }
 
 .tel-field.campo-invalido {
-  border-color: #d98a6b;
+  border-color: var(--error);
 }
 
 .tel-flag-btn {
@@ -686,7 +517,7 @@ section h2 {
   gap: 0.35rem;
   background: transparent;
   border: none;
-  border-right: 1px solid rgba(199, 162, 82, 0.2);
+  border-right: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
   padding: 0 0.6rem;
   cursor: pointer;
 }
@@ -700,7 +531,7 @@ section h2 {
 }
 
 .tel-flag-arrow {
-  color: var(--muted);
+  color: var(--texto-2);
   font-size: 0.7rem;
 }
 
@@ -712,7 +543,7 @@ section h2 {
   padding: 0.55rem 0.7rem;
   font-family: var(--sans);
   font-size: 0.9rem;
-  color: var(--ivory);
+  color: var(--tinta);
 }
 
 .tel-field input:focus {
@@ -730,10 +561,10 @@ section h2 {
   margin: 0;
   padding: 0.35rem 0;
   list-style: none;
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.3);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 30%, transparent);
   border-radius: 6px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 30px var(--sombra);
 }
 
 .tel-dropdown[hidden] {
@@ -746,13 +577,13 @@ section h2 {
   gap: 0.55rem;
   padding: 0.4rem 0.75rem;
   font-size: 0.85rem;
-  color: var(--ivory);
+  color: var(--tinta);
   cursor: pointer;
 }
 
 .tel-dropdown li:hover,
 .tel-dropdown li.tel-opt-activa {
-  background: rgba(199, 162, 82, 0.12);
+  background: color-mix(in srgb, var(--acento) 12%, transparent);
 }
 
 .tel-dropdown li img {
@@ -774,7 +605,7 @@ section h2 {
   width: 100%;
   margin: 0;
   padding: 0.5rem 0.75rem;
-  color: var(--ivory);
+  color: var(--tinta);
   font-size: 0.85rem;
   font-weight: 400;
 }
@@ -787,7 +618,7 @@ section h2 {
 }
 
 .tel-opt-dial {
-  color: var(--muted);
+  color: var(--texto-2);
   font-size: 0.78rem;
 }
 
@@ -804,21 +635,21 @@ section h2 {
   align-items: center;
   gap: 0.5rem;
   width: 100%;
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.28);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 28%, transparent);
   border-radius: 5px;
   padding: 0.55rem 0.7rem;
   font-family: var(--sans);
   font-size: 0.9rem;
-  color: var(--ivory);
+  color: var(--tinta);
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .pais-btn:focus-visible {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px var(--gold-glow, rgba(199, 162, 82, 0.15));
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px var(--acento-halo, color-mix(in srgb, var(--acento) 15%, transparent));
 }
 
 .pais-btn-flag {
@@ -841,7 +672,7 @@ section h2 {
 .field label:not(.checkbox) {
   font-size: 0.98rem;
   letter-spacing: 0.01em;
-  color: var(--ivory);
+  color: var(--tinta);
   font-weight: 600;
 }
 
@@ -850,9 +681,9 @@ section h2 {
 .field textarea {
   width: 100%;
   min-width: 0; /* <select> se dimensiona por su option más largo (nombres de región) si no se fuerza esto */
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.28);
-  color: var(--ivory);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 28%, transparent);
+  color: var(--tinta);
   font-family: var(--sans);
   font-size: 0.9rem;
   padding: 0.55rem 0.7rem;
@@ -865,8 +696,8 @@ section h2 {
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px var(--gold-glow, rgba(199, 162, 82, 0.15));
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px var(--acento-halo, color-mix(in srgb, var(--acento) 15%, transparent));
 }
 
 .field select:disabled,
@@ -878,7 +709,7 @@ section h2 {
 .field input.campo-invalido,
 .field select.campo-invalido,
 .field textarea.campo-invalido {
-  border-color: #d98a6b;
+  border-color: var(--error);
 }
 
 /* scroll-margin-top en los elementos exactos a los que registro.js hace
@@ -891,14 +722,14 @@ section h2 {
 
 .field input.campo-invalido:focus,
 .field select.campo-invalido:focus {
-  box-shadow: 0 0 0 3px rgba(217, 138, 106, 0.2);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--error) 20%, transparent);
 }
 
 .field-error {
   display: block;
   font-size: 0.78rem;
   line-height: 1.3;
-  color: #d98a6b;
+  color: var(--error);
   min-height: 1.3em;
 }
 
@@ -921,7 +752,7 @@ section h2 {
   font-size: 0.82rem;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--muted);
+  color: var(--texto-2);
   cursor: pointer;
 }
 
@@ -931,7 +762,7 @@ section h2 {
 }
 
 .checkbox.campo-invalido input[type="checkbox"] {
-  outline: 2px solid #d98a6b;
+  outline: 2px solid var(--error);
   outline-offset: 2px;
 }
 
@@ -939,20 +770,20 @@ section h2 {
   margin-top: 0.2rem;
   width: 1rem;
   height: 1rem;
-  accent-color: var(--gold);
+  accent-color: var(--acento);
   flex-shrink: 0;
 }
 
-.checkbox a { color: var(--gold); border-bottom: 1px solid var(--gold-dim); }
+.checkbox a { color: var(--acento); border-bottom: 1px solid var(--acento-suave); }
 
 .req-mark {
-  color: var(--gold);
+  color: var(--acento);
   font-weight: 600;
   margin-left: 0.35rem;
 }
 
 .tag-opcional {
-  color: var(--gold-dim);
+  color: var(--acento-suave);
 }
 
 .campo-consentimiento {
@@ -967,7 +798,7 @@ section h2 {
 /* Dropzone — subir CV */
 
 .dropzone {
-  border: 1.5px dashed rgba(199, 162, 82, 0.35);
+  border: 1.5px dashed color-mix(in srgb, var(--acento) 35%, transparent);
   border-radius: 6px;
   padding: 1.25rem;
   display: flex;
@@ -976,22 +807,22 @@ section h2 {
   text-align: center;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
-  background: var(--black-soft);
+  background: var(--superficie);
 }
 
 .dropzone:hover,
 .dropzone:focus-visible {
-  border-color: var(--gold-dim);
-  background: rgba(199, 162, 82, 0.05);
+  border-color: var(--acento-suave);
+  background: color-mix(in srgb, var(--acento) 5%, transparent);
 }
 
 .dropzone.dragover {
-  border-color: var(--gold);
-  background: rgba(199, 162, 82, 0.1);
+  border-color: var(--acento);
+  background: color-mix(in srgb, var(--acento) 10%, transparent);
 }
 
 .dropzone.has-error {
-  border-color: #d98a6b;
+  border-color: var(--error);
 }
 
 .dropzone-idle {
@@ -999,12 +830,12 @@ section h2 {
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
-  color: var(--muted);
+  color: var(--texto-2);
   font-size: 0.88rem;
 }
 
 .dropzone-icon {
-  color: var(--gold);
+  color: var(--acento);
   font-size: 1.2rem;
   line-height: 1;
   margin-bottom: 0.15rem;
@@ -1015,12 +846,12 @@ section h2 {
 }
 
 .dropzone-link {
-  color: var(--gold);
-  border-bottom: 1px solid var(--gold-dim);
+  color: var(--acento);
+  border-bottom: 1px solid var(--acento-suave);
 }
 
 .dropzone-hint {
-  color: var(--gold-dim);
+  color: var(--acento-suave);
   font-size: 0.75rem;
 }
 
@@ -1033,25 +864,25 @@ section h2 {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--ivory);
+  color: var(--tinta);
   font-size: 0.9rem;
 }
 
 .dropzone-filename {
-  color: var(--ivory);
+  color: var(--tinta);
 }
 
 .dropzone-remove {
   background: transparent;
-  border: 1px solid rgba(199, 162, 82, 0.35);
-  color: var(--gold);
+  border: 1px solid color-mix(in srgb, var(--acento) 35%, transparent);
+  color: var(--acento);
   font-size: 0.75rem;
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.dropzone-remove:hover { background: rgba(199, 162, 82, 0.1); }
+.dropzone-remove:hover { background: color-mix(in srgb, var(--acento) 10%, transparent); }
 
 /* Honeypot: invisible para humanos, visible para bots que rellenan todo */
 .hp-field {
@@ -1065,20 +896,20 @@ section h2 {
 
 .form-registro .cta {
   --progreso: 1;
-  --gris-boton: #746f63;
+  --gris-boton: var(--texto-2);
   position: sticky;
   bottom: 1.5rem;
   display: block;
   margin: 0.5rem 0 0 auto;
-  background: var(--black);
+  background: var(--papel);
   border-width: calc(1px + var(--progreso) * 1.5px);
-  border-color: color-mix(in srgb, var(--gris-boton) calc((1 - var(--progreso)) * 100%), var(--gold) calc(var(--progreso) * 100%));
-  color: color-mix(in srgb, var(--gris-boton) calc((1 - var(--progreso)) * 100%), var(--gold) calc(var(--progreso) * 100%));
+  border-color: color-mix(in srgb, var(--gris-boton) calc((1 - var(--progreso)) * 100%), var(--acento) calc(var(--progreso) * 100%));
+  color: color-mix(in srgb, var(--gris-boton) calc((1 - var(--progreso)) * 100%), var(--acento) calc(var(--progreso) * 100%));
   /* El halo dorado crece con el progreso — mucho más notorio a simple
      vista que solo el cambio de color del borde/texto. */
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 calc(var(--progreso) * 26px) color-mix(in srgb, var(--gold) calc(var(--progreso) * 70%), transparent);
+    0 10px 30px var(--sombra),
+    0 0 calc(var(--progreso) * 26px) color-mix(in srgb, var(--acento) calc(var(--progreso) * 70%), transparent);
   cursor: pointer;
   font-family: var(--sans);
 }
@@ -1087,8 +918,8 @@ section h2 {
    aparte, la regla sin :hover gana por ir después en el archivo y el fondo
    dorado del hover nunca se llega a ver. */
 .form-registro .cta:hover {
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
 }
 
 /* Con los 3 mínimos completos (Nombre, Email, CV) el botón ya se puede
@@ -1096,8 +927,8 @@ section h2 {
    modal) — se rellena de dorado sólido para que se note bien llamativo,
    no solo al pasar el mouse. */
 .form-registro .cta:not(.cta--incompleto) {
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
 }
 
 .form-registro .cta {
@@ -1121,7 +952,7 @@ section h2 {
   margin-top: 0.75rem;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--texto-2);
   min-height: 1.2em;
   text-align: right;
 }
@@ -1146,28 +977,28 @@ section h2 {
 
 .mini-modal {
   width: min(28rem, 100%);
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.3);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 30%, transparent);
   border-radius: 8px;
   padding: 1.75rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px var(--sombra);
 }
 
 .mini-modal h3 {
   font-family: var(--serif);
-  color: var(--gold);
+  color: var(--acento);
   font-weight: 600;
   font-size: 1.15rem;
   margin-bottom: 0.75rem;
 }
 
 .mini-modal p {
-  color: var(--muted);
+  color: var(--texto-2);
   font-size: 0.85rem;
   line-height: 1.6;
 }
 
-.mini-modal p a { color: var(--gold); border-bottom: 1px solid var(--gold-dim); }
+.mini-modal p a { color: var(--acento); border-bottom: 1px solid var(--acento-suave); }
 
 .mini-modal .checkbox {
   margin-top: 1.5rem;
@@ -1193,26 +1024,26 @@ section h2 {
 
 .mini-modal-btn--ghost {
   background: transparent;
-  border: 1px solid rgba(199, 162, 82, 0.3);
-  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--acento) 30%, transparent);
+  color: var(--texto-2);
 }
 
-.mini-modal-btn--ghost:hover { color: var(--ivory); border-color: rgba(199, 162, 82, 0.5); }
+.mini-modal-btn--ghost:hover { color: var(--tinta); border-color: color-mix(in srgb, var(--acento) 50%, transparent); }
 
 .mini-modal-btn--gold {
-  background: var(--gold);
-  border: 1px solid var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  border: 1px solid var(--acento);
+  color: var(--papel);
 }
 
 /* Antes cambiaba a fondo gold-dim manteniendo el texto negro: contraste
    ~4.3:1, bajo el mínimo de accesibilidad (4.5:1) para texto normal. Se
    invierte a fondo negro + texto dorado (~8:1) — más legible y además
    se distingue mejor del estado normal (dorado sólido). */
-.mini-modal-btn--gold:hover { background: var(--black); color: var(--gold); border-color: var(--gold); }
+.mini-modal-btn--gold:hover { background: var(--papel); color: var(--acento); border-color: var(--acento); }
 
-.form-status.ok { color: #8fbf8f; }
-.form-status.error { color: #d98a6b; }
+.form-status.ok { color: var(--ok); }
+.form-status.error { color: var(--error); }
 
 /* Estados "enviando"/"error" del mini-modal de autorización -- todo el
    feedback del envío pasa por acá cuando el modal está abierto, en vez de
@@ -1253,8 +1084,8 @@ section h2 {
 .mini-modal-spinner {
   width: 34px;
   height: 34px;
-  border: 3px solid rgba(199, 162, 82, 0.2);
-  border-top-color: var(--gold);
+  border: 3px solid color-mix(in srgb, var(--acento) 20%, transparent);
+  border-top-color: var(--acento);
   border-radius: 50%;
   margin-bottom: 1rem;
   animation: mini-modal-spin 0.8s linear infinite;
@@ -1270,7 +1101,7 @@ section h2 {
 }
 
 .mini-modal-error-text {
-  color: #d98a6b;
+  color: var(--error);
   font-size: 0.85rem;
   line-height: 1.6;
 }
@@ -1310,7 +1141,7 @@ section h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(11, 11, 12, 0.85);
+  background: rgba(14, 12, 18, 0.6);
   backdrop-filter: blur(8px);
   padding: 1.5rem;
   opacity: 0;
@@ -1327,10 +1158,10 @@ section h2 {
   position: relative;
   width: 100%;
   max-width: 500px;
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.2);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
   border-radius: 12px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 30px 70px var(--sombra);
   overflow: hidden;
   transform: translateY(20px);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1343,8 +1174,8 @@ section h2 {
 .info-modal-header {
   position: relative;
   padding: 1.5rem 1.75rem 1.0rem;
-  background: linear-gradient(135deg, rgba(199, 162, 82, 0.05) 0%, transparent 100%);
-  border-bottom: 1px solid rgba(199, 162, 82, 0.1);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--acento) 5%, transparent) 0%, transparent 100%);
+  border-bottom: 1px solid color-mix(in srgb, var(--acento) 10%, transparent);
 }
 
 .info-modal-close {
@@ -1353,8 +1184,8 @@ section h2 {
   right: 1.25rem;
   z-index: 2;
   background: transparent;
-  border: 1px solid rgba(199, 162, 82, 0.2);
-  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
+  color: var(--texto-2);
   border-radius: 6px;
   width: 30px;
   height: 30px;
@@ -1366,9 +1197,9 @@ section h2 {
 }
 
 .info-modal-close:hover {
-  border-color: var(--gold);
-  color: var(--ivory);
-  background: rgba(199, 162, 82, 0.05);
+  border-color: var(--acento);
+  color: var(--tinta);
+  background: color-mix(in srgb, var(--acento) 5%, transparent);
 }
 
 .info-modal-badge {
@@ -1377,7 +1208,7 @@ section h2 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--gold);
+  color: var(--acento);
   margin-bottom: 0.5rem;
 }
 
@@ -1385,14 +1216,14 @@ section h2 {
   font-family: var(--serif);
   font-size: clamp(1.25rem, 3.5vw, 1.65rem);
   font-weight: 500;
-  color: var(--ivory);
+  color: var(--tinta);
   line-height: 1.25;
   margin-bottom: 0.4rem;
 }
 
 .info-modal-subtitle {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--texto-2);
   line-height: 1.45;
 }
 
@@ -1405,7 +1236,7 @@ section h2 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--gold-dim);
+  color: var(--acento-suave);
   margin-bottom: 1.2rem;
 }
 
@@ -1417,17 +1248,17 @@ section h2 {
 }
 
 .info-option-card {
-  background: var(--black);
-  border: 1px solid rgba(199, 162, 82, 0.15);
+  background: var(--papel);
+  border: 1px solid color-mix(in srgb, var(--acento) 15%, transparent);
   border-radius: 8px;
   padding: 1.5rem;
   transition: all 0.25s ease;
 }
 
 .info-option-card:hover {
-  border-color: rgba(199, 162, 82, 0.45);
+  border-color: color-mix(in srgb, var(--acento) 45%, transparent);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px var(--sombra);
 }
 
 .info-option-icon {
@@ -1439,13 +1270,13 @@ section h2 {
   font-family: var(--serif);
   font-size: 1.15rem;
   font-weight: 500;
-  color: var(--ivory);
+  color: var(--tinta);
   margin-bottom: 0.5rem;
 }
 
 .info-option-desc {
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--texto-2);
   line-height: 1.5;
   margin-bottom: 1rem;
 }
@@ -1461,14 +1292,14 @@ section h2 {
   font-weight: 500;
   padding: 0.2rem 0.6rem;
   border-radius: 99px;
-  background: rgba(199, 162, 82, 0.06);
-  color: var(--gold);
-  border: 1px solid rgba(199, 162, 82, 0.2);
+  background: color-mix(in srgb, var(--acento) 6%, transparent);
+  color: var(--acento);
+  border: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
 }
 
 .info-note {
-  background: rgba(199, 162, 82, 0.05);
-  border: 1px solid rgba(199, 162, 82, 0.15);
+  background: color-mix(in srgb, var(--acento) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--acento) 15%, transparent);
   border-radius: 8px;
   padding: 0.85rem 1.1rem;
   display: flex;
@@ -1484,12 +1315,12 @@ section h2 {
 
 .info-note-text {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--texto-2);
   line-height: 1.45;
 }
 
 .info-note-text strong {
-  color: var(--gold);
+  color: var(--acento);
   font-weight: 500;
 }
 
@@ -1506,9 +1337,9 @@ section h2 {
   display: inline-block;
   text-align: center;
   padding: 0.85rem 1.5rem;
-  background: var(--gold);
-  color: var(--black);
-  border: 1px solid var(--gold);
+  background: var(--acento);
+  color: var(--papel);
+  border: 1px solid var(--acento);
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -1519,8 +1350,8 @@ section h2 {
 }
 
 .info-btn-primary:hover {
-  background: var(--black);
-  color: var(--gold);
+  background: var(--papel);
+  color: var(--acento);
 }
 
 .info-btn-primary:disabled {
@@ -1529,15 +1360,15 @@ section h2 {
 }
 
 .info-btn-primary:disabled:hover {
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
 }
 
 .info-btn-fill {
   position: absolute;
   inset: 0;
   width: 0%;
-  background: var(--black);
+  background: var(--papel);
   opacity: 0.22;
   z-index: 0;
   pointer-events: none;
@@ -1560,8 +1391,8 @@ section h2 {
 .info-btn-secondary {
   padding: 0.85rem 1.5rem;
   background: transparent;
-  border: 1px solid rgba(199, 162, 82, 0.3);
-  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--acento) 30%, transparent);
+  color: var(--texto-2);
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -1571,8 +1402,8 @@ section h2 {
 }
 
 .info-btn-secondary:hover {
-  border-color: var(--gold);
-  color: var(--ivory);
+  border-color: var(--acento);
+  color: var(--tinta);
 }
 
 @media (max-width: 600px) {
@@ -1605,20 +1436,20 @@ section h2 {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px var(--sombra);
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .chat-launcher:hover {
   transform: translateY(-2px);
-  background: #d8b565;
+  background: color-mix(in srgb, var(--acento) 82%, var(--tinta));
 }
 
 .chat-launcher svg {
@@ -1635,10 +1466,10 @@ section h2 {
   z-index: 95;
   width: min(336px, calc(100vw - 2rem));
   max-height: min(560px, calc(100vh - 3rem));
-  background: var(--black-soft);
-  border: 1px solid rgba(199, 162, 82, 0.2);
+  background: var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
   border-radius: 14px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 30px 70px var(--sombra);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1660,8 +1491,8 @@ section h2 {
   justify-content: space-between;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
-  background: linear-gradient(135deg, rgba(199, 162, 82, 0.08) 0%, transparent 100%);
-  border-bottom: 1px solid rgba(184, 180, 170, 0.16);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--acento) 8%, transparent) 0%, transparent 100%);
+  border-bottom: 1px solid color-mix(in srgb, var(--texto-2) 16%, transparent);
   flex-shrink: 0;
 }
 
@@ -1670,20 +1501,20 @@ section h2 {
   font-family: var(--serif);
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--ivory);
+  color: var(--tinta);
 }
 
 .chat-panel-sub {
   display: block;
   font-size: 0.7rem;
-  color: var(--muted);
+  color: var(--texto-2);
   margin-top: 0.1rem;
 }
 
 .chat-panel-close {
   background: transparent;
-  border: 1px solid rgba(199, 162, 82, 0.2);
-  color: var(--muted);
+  border: 1px solid color-mix(in srgb, var(--acento) 20%, transparent);
+  color: var(--texto-2);
   border-radius: 6px;
   width: 25px;
   height: 25px;
@@ -1696,8 +1527,8 @@ section h2 {
 }
 
 .chat-panel-close:hover {
-  border-color: var(--gold);
-  color: var(--ivory);
+  border-color: var(--acento);
+  color: var(--tinta);
 }
 
 .chat-transcript {
@@ -1713,13 +1544,13 @@ section h2 {
      encima del primer mensaje. Firefox usa scrollbar-width/color; Chrome/Edge
      necesitan el bloque ::-webkit-scrollbar de abajo. */
   scrollbar-width: thin;
-  scrollbar-color: rgba(199, 162, 82, 0.35) transparent;
+  scrollbar-color: color-mix(in srgb, var(--acento) 35%, transparent) transparent;
 }
 
 .chat-transcript::-webkit-scrollbar { width: 7px; }
 .chat-transcript::-webkit-scrollbar-track { background: transparent; }
 .chat-transcript::-webkit-scrollbar-thumb {
-  background: rgba(199, 162, 82, 0.35);
+  background: color-mix(in srgb, var(--acento) 35%, transparent);
   border-radius: 4px;
 }
 .chat-transcript::-webkit-scrollbar-button { display: none; height: 0; width: 0; }
@@ -1737,17 +1568,17 @@ section h2 {
 }
 
 .chat-msg-bot .chat-msg-bubble {
-  background: var(--black);
-  border: 1px solid rgba(199, 162, 82, 0.15);
-  color: var(--ivory);
+  background: var(--papel);
+  border: 1px solid color-mix(in srgb, var(--acento) 15%, transparent);
+  color: var(--tinta);
   border-bottom-left-radius: 3px;
 }
 
 .chat-cta-link {
   display: inline-block;
   margin-top: 0.5rem;
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
   font-weight: 500;
   font-size: 0.77rem;
   text-decoration: none;
@@ -1756,11 +1587,11 @@ section h2 {
   transition: background 0.15s ease;
 }
 
-.chat-cta-link:hover { background: #d8b565; }
+.chat-cta-link:hover { background: color-mix(in srgb, var(--acento) 82%, var(--tinta)); }
 
 .chat-msg-user .chat-msg-bubble {
-  background: var(--gold);
-  color: var(--black);
+  background: var(--acento);
+  color: var(--papel);
   border-bottom-right-radius: 3px;
 }
 
@@ -1775,7 +1606,7 @@ section h2 {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--muted);
+  background: var(--texto-2);
   animation: chat-typing-bounce 1.2s infinite ease-in-out;
 }
 .chat-typing-dot:nth-child(2) { animation-delay: 0.15s; }
@@ -1792,7 +1623,7 @@ section h2 {
 .chat-composer {
   padding: 0.5rem 0 0.5rem;
   margin-top: 0.2rem;
-  border-top: 1px solid rgba(184, 180, 170, 0.14);
+  border-top: 1px solid color-mix(in srgb, var(--texto-2) 14%, transparent);
 }
 
 .chat-composer:empty {
@@ -1808,10 +1639,10 @@ section h2 {
 }
 
 .chat-opcion {
-  background: var(--black);
-  border: 1px solid rgba(199, 162, 82, 0.28);
+  background: var(--papel);
+  border: 1px solid color-mix(in srgb, var(--acento) 28%, transparent);
   border-radius: 7px;
-  color: var(--ivory);
+  color: var(--tinta);
   font-family: var(--sans);
   font-size: 0.79rem;
   text-align: left;
@@ -1822,8 +1653,8 @@ section h2 {
 
 .chat-opcion:hover,
 .chat-opcion:focus-visible {
-  border-color: var(--gold);
-  background: rgba(199, 162, 82, 0.08);
+  border-color: var(--acento);
+  background: color-mix(in srgb, var(--acento) 8%, transparent);
   outline: none;
 }
 
@@ -1861,13 +1692,13 @@ section h2 {
 
 .chat-status {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--texto-2);
   min-height: 1.1em;
   margin-top: 0.3rem;
 }
 
-.chat-status.error { color: #d98a6b; }
-.chat-status.ok { color: #8fbf8f; }
+.chat-status.error { color: var(--error); }
+.chat-status.ok { color: var(--ok); }
 
 .chat-cambiar {
   display: inline-block;
@@ -1876,13 +1707,13 @@ section h2 {
   border: none;
   padding: 0;
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--texto-2);
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
 }
 
-.chat-cambiar:hover { color: var(--gold); }
+.chat-cambiar:hover { color: var(--acento); }
 
 .chat-panel-footer {
   flex-shrink: 0;
@@ -1892,12 +1723,12 @@ section h2 {
 
 .chat-fallback {
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--texto-2);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.chat-fallback:hover { color: var(--gold); }
+.chat-fallback:hover { color: var(--acento); }
 
 @media (max-width: 600px) {
   .chat-panel {

@@ -44,7 +44,33 @@
  *   npx --yes wrangler@latest deploy lead-worker.js --name nodoxyz-lead-widget
  */
 
+import { avisarEquipo } from '../worker/aviso-equipo.js';
+
 const ALLOWED_ORIGIN = 'https://nodoxyz.cl';
+
+// Aviso al equipo de cada consulta nueva (../worker/aviso-equipo.js, secret RESEND_API_KEY).
+// Best-effort: el lead ya quedó en KV y un fallo de envío solo se loggea.
+async function avisarLead(env, lead) {
+  try {
+    await avisarEquipo({
+      asunto: `Nueva consulta en nodoxyz.cl: ${lead.nombre} (${lead.rama})`,
+      titulo: 'Nueva consulta desde el botón "Consulta aquí"',
+      responderA: lead.contacto,
+      filas: [
+        ['Nombre', lead.nombre],
+        ['Contacto', lead.contacto],
+        ['Servicio', lead.rama],
+        ['Contexto', lead.contexto],
+        ['Comuna', lead.comuna],
+        ['Documentos', lead.documentos.join(', ')],
+        ['Mensaje', lead.mensaje],
+        ['Id', lead.id],
+      ],
+    }, env);
+  } catch (err) {
+    console.error('No se pudo enviar el aviso de la consulta al equipo:', err);
+  }
+}
 
 function corsHeaders() {
   return {
@@ -106,7 +132,7 @@ async function verificarTurnstile(token, ip, secret) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const headers = corsHeaders();
     const url = new URL(request.url);
 
@@ -168,6 +194,7 @@ export default {
       };
 
       await env.LEADS.put(id, JSON.stringify(lead));
+      ctx.waitUntil(avisarLead(env, lead));
       return json({ ok: true, id }, 201, headers);
     }
 

@@ -67,3 +67,10 @@ npx --yes wrangler@latest deploy profesionales-worker.js --name nodoxyz-registro
 Cloudflare Workers y KV tienen plan gratuito (100.000 requests/día en
 Workers, lecturas/escrituras de KV con cuota generosa) — para el volumen
 esperado de un formulario de registro esto no debería generar costo.
+
+## Aviso al equipo por correo (04-11-2026)
+
+Además del agradecimiento a quien se registra, cada registro nuevo se avisa al equipo con
+`aviso-equipo.js` (Resend, mismo secret `RESEND_API_KEY`). El destinatario está en `AVISO_PARA`
+de `wrangler.toml` y "Responder" le contesta al profesional. El CV no va adjunto: se baja desde
+el panel de Nodo Profesionales.

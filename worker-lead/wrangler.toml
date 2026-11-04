@@ -7,3 +7,7 @@ compatibility_date = "2026-01-01"
 kv_namespaces = [
   { binding = "LEADS", id = "4dd8130445824dcfb0ea9f1ed16aad00" }
 ]
+
+# Aviso al equipo de cada envío (aviso-equipo.js). Varios destinatarios, separados por coma.
+[vars]
+AVISO_PARA = "contacto@nodoxyz.cl"

@@ -26,6 +26,7 @@
  */
 
 import { enviarConfirmacion } from './enviar-resend.js';
+import { avisarEquipo } from './aviso-equipo.js';
 
 // Orígenes permitidos para el POST público del formulario.
 // 'null' cubre pruebas locales abriendo profesionales.html con doble clic (file://).
@@ -148,8 +149,37 @@ async function enviarCorreoAgradecimiento(env, registro) {
   }
 }
 
+// Aviso al equipo de cada registro nuevo (aviso-equipo.js). Igual que el agradecimiento, es
+// best-effort: el registro ya quedó en KV y un fallo de envío solo se loggea.
+async function avisarRegistro(env, registro) {
+  try {
+    await avisarEquipo({
+      asunto: `Nuevo registro de profesional: ${registro.nombre}`,
+      titulo: 'Nuevo registro en la Red de Profesionales',
+      responderA: registro.email,
+      filas: [
+        ['Nombre', registro.nombre],
+        ['Email', registro.email],
+        ['Teléfono', registro.telefono],
+        ['Comuna', [registro.comuna, registro.region].filter(Boolean).join(', ')],
+        ['Títulos', [...registro.titulos, registro.titulo_otro].filter(Boolean).join(', ')],
+        ['Rubros', [...registro.rubros, registro.rubro_otro].filter(Boolean).join(', ')],
+        ['Experiencia', registro.anios_experiencia],
+        ['LinkedIn o portafolio', registro.cv_link],
+        ['Comentarios', registro.mensaje],
+        ['CV', registro.cv_file_name ? `${registro.cv_file_name} (${Math.round((registro.cv_file_size || 0) / 1024)} KB)` : ''],
+        ['Novedades por email', registro.newsletter ? 'Sí' : 'No'],
+        ['Id', registro.id],
+      ],
+      pie: 'El CV completo se descarga desde el panel de Nodo Profesionales.',
+    }, env);
+  } catch (err) {
+    console.error('No se pudo enviar el aviso de registro al equipo:', err);
+  }
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') || '';
     const headers = corsHeaders(origin);
     const url = new URL(request.url);
@@ -242,6 +272,7 @@ export default {
 
       await env.REGISTROS.put(id, JSON.stringify(registro));
       await enviarCorreoAgradecimiento(env, registro);
+      ctx.waitUntil(avisarRegistro(env, registro));
       return json({ ok: true, id }, 201, headers);
     }
 
