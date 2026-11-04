@@ -339,6 +339,28 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
 
 .social-rail a:hover { background: var(--acento); color: var(--papel); border-color: var(--acento); transform: scale(1.15); }
 
+/* Páginas legales (privacidad y términos): una columna de lectura de unos 70 caracteres. */
+
+.legal { max-width: 46rem; margin: 0 auto; padding: 3.5rem 6vw 5rem; }
+.legal h1 { margin: 0.5rem 0 0.4rem; font-weight: 200; font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.1; color: var(--acento); }
+.legal h2 { margin: 2.75rem 0 0.9rem; padding-top: 1.25rem; border-top: 1px solid var(--linea); font-size: 1.15rem; font-weight: 400; scroll-margin-top: 5rem; }
+.legal h3 { margin: 1.75rem 0 0.6rem; font-size: 0.98rem; font-weight: 500; }
+.legal p, .legal li { font-size: 0.95rem; line-height: 1.75; font-weight: 300; color: var(--texto); }
+.legal p { margin-bottom: 0.9rem; }
+.legal ul { margin: 0 0 1rem 1.1rem; display: grid; gap: 0.35rem; }
+.legal strong { font-weight: 500; color: var(--tinta); }
+.legal a { color: var(--acento); border-bottom: 1px solid var(--linea); }
+.legal a:hover { border-color: var(--acento); }
+.legal code { font-size: 0.85em; padding: 0.05rem 0.35rem; background: var(--superficie); border: 1px solid var(--linea); }
+.legal-version { color: var(--texto-2) !important; font-size: 0.85rem !important; }
+.legal-indice { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin: 1.5rem 0 2rem; padding: 0.9rem 0; border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); font-size: 0.82rem; }
+.legal-indice a { border: 0; color: var(--texto); }
+.legal-indice a:hover { color: var(--acento); }
+.legal-ficha { display: grid; margin: 0 0 1rem; border-top: 1px solid var(--linea); }
+.legal-ficha div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--linea); }
+.legal-ficha dt { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acento); padding-top: 0.3rem; }
+.legal-ficha dd { font-size: 0.93rem; line-height: 1.65; font-weight: 300; color: var(--texto); }
+
 /* Con el riel de redes a la derecha, el contenido deja ese margen libre en escritorio. */
 @media (min-width: 641px) {
   .portada, .seccion { padding-right: calc(6vw + 3rem); }
@@ -362,6 +384,8 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
   .grilla > li, .fichas > li { border-left: 0 !important; padding-left: 0 !important; }
   .pilar { grid-template-columns: 96px 1fr; }
   .ficha div { grid-template-columns: 92px minmax(0, 1fr); }
+  .legal { padding-left: 1rem; padding-right: 1rem; }
+  .legal-ficha div { grid-template-columns: 1fr; gap: 0.2rem; }
   .site-footer { flex-direction: column; text-align: center; }
 
   /* En teléfono el riel pasa a una barra fija abajo; el pie gana margen para no quedar tapado. */
@@ -1689,6 +1713,9 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
   transform: scale(0.9);
   transform-origin: center;
 }
+
+.chat-legal { margin: 0.25rem 0 0; font-size: 0.72rem; line-height: 1.5; color: var(--texto-2); }
+.chat-legal a { color: var(--acento); border-bottom: 1px solid var(--linea); }
 
 .chat-status {
   font-size: 0.75rem;

@@ -3,158 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Política de Privacidad — Ingeniería NodoXYZ</title>
+<title>Política de privacidad · NodoXYZ</title>
+<meta name="description" content="Cómo trata Ingeniería NodoXYZ Ltda. los datos personales: qué datos, para qué, con quién, cuánto tiempo y cómo ejercer tus derechos.">
+<!--
+  Política de tratamiento de datos (Ley 19.628 modificada por la Ley 21.719, art. 14 ter).
+  Redactada por Claude Code el 04-11-2026 a partir de Conocimiento/Normativa/BCN/ y de lo que el
+  sitio hace de verdad (Website/, worker/, worker-lead/). Pendiente: revisión de un abogado
+  (Skills/HUECOS.md, H45) y confirmación de Bruno y Cristofer de los plazos de conservación.
+  Si cambia lo que el sitio recoge, o los proveedores, esta página se actualiza con versión y fecha.
+-->
+<link rel="icon" type="image/png" href="../logo2_transparente.png">
+<script src="../js/tema.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --black: #0b0b0c;
-    --black-soft: #141416;
-    --ivory: #f5f1e8;
-    --muted: #b8b4aa;
-    --gold: #c7a252;
-    --gold-dim: #8a723c;
-    --serif: "Playfair Display", Georgia, serif;
-    --sans: "Inter", system-ui, sans-serif;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--black);
-    color: var(--ivory);
-    font-family: var(--sans);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem 6rem;
-  }
-  @media (max-width: 480px) {
-    main { padding: 2.5rem 1.1rem 4rem; }
-  }
-  .eyebrow {
-    font-size: 0.9rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.75rem;
-  }
-  h1 {
-    font-family: var(--serif);
-    font-weight: 600;
-    font-size: clamp(1.5rem, 5vw, 2rem);
-    margin-bottom: 0.5rem;
-  }
-  .updated {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 2.5rem;
-  }
-  h2 {
-    font-family: var(--serif);
-    font-weight: 600;
-    font-size: clamp(1.05rem, 3vw, 1.25rem);
-    color: var(--ivory);
-    margin-top: 2.25rem;
-    margin-bottom: 0.75rem;
-    border-left: 3px solid var(--gold);
-    padding-left: 0.75rem;
-  }
-  p, li {
-    color: var(--muted);
-    font-size: 1rem;
-    margin-bottom: 0.9rem;
-  }
-  ul { padding-left: 1.25rem; }
-  a { color: var(--gold); text-decoration: underline; }
-  footer {
-    margin-top: 3rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--black-soft);
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-<main>
-  <div class="eyebrow">Ingeniería NodoXYZ Limitada</div>
-  <h1>Política de Privacidad</h1>
-  <p class="updated">Última actualización: 27 de julio de 2026</p>
+
+<header class="site-header">
+  <a class="marca" href="../index.html" aria-label="NodoXYZ, ir al inicio">NODO <i></i> XYZ</a>
+  <nav>
+    <a href="../index.html">Inicio</a>
+    <a href="terminos.html">Términos</a>
+    <button type="button" class="tema-btn" aria-label="Modo oscuro" aria-pressed="false">
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main class="legal">
+  <p class="rot">Ingeniería NodoXYZ Ltda.</p>
+  <h1>Política de privacidad</h1>
+  <p class="legal-version">Versión 2.0, vigente desde el 4 de noviembre de 2026. Reemplaza a la versión 1.0 del 27 de julio de 2026.</p>
+
+  <nav class="legal-indice" aria-label="Contenido">
+    <a href="#responsable">1. Responsable</a>
+    <a href="#datos">2. Qué datos tratamos</a>
+    <a href="#destinatarios">3. Con quién los compartimos</a>
+    <a href="#extranjero">4. Datos fuera de Chile</a>
+    <a href="#seguridad">5. Seguridad</a>
+    <a href="#derechos">6. Tus derechos</a>
+    <a href="#cookies">7. Cookies y medición</a>
+    <a href="#redes">8. Redes sociales</a>
+    <a href="#cambios">9. Cambios</a>
+  </nav>
 
   <p>
-    Ingeniería NodoXYZ Limitada (RUT 78.471.316-4, en adelante "NodoXYZ"),
-    con domicilio en Ñuñoa, Región Metropolitana de Santiago, Chile, es
-    responsable del tratamiento de los datos descritos en esta política,
-    conforme a la Ley N° 19.628 sobre Protección de la Vida Privada.
+    Esta política explica qué datos personales trata Ingeniería NodoXYZ Ltda. a través de
+    <a href="https://nodoxyz.cl">nodoxyz.cl</a>, sus correos y sus cuentas en redes sociales, para qué
+    los usa, con quién los comparte, cuánto tiempo los guarda y cómo puedes ejercer tus derechos. Se
+    ajusta a la Ley N° 19.628 sobre protección de la vida privada, en el texto que le da la Ley
+    N° 21.719, que rige desde el 1 de diciembre de 2026.
   </p>
 
-  <h2>1. Alcance de esta política</h2>
-  <p>
-    Esta política aplica a las integraciones que NodoXYZ mantiene con
-    plataformas de redes sociales (Instagram, Facebook, LinkedIn, X,
-    TikTok, YouTube y otras) a través de herramientas de gestión de
-    contenido de uso interno, para administrar exclusivamente las
-    cuentas oficiales de NodoXYZ en dichas plataformas.
-  </p>
-
-  <h2>2. Qué datos accedemos</h2>
-  <p>Al conectar una cuenta oficial de NodoXYZ, accedemos únicamente a:</p>
+  <h2 id="responsable">1. Responsable de los datos</h2>
   <ul>
-    <li>Tokens de autenticación (OAuth) necesarios para publicar contenido y leer métricas de rendimiento de las cuentas propias de NodoXYZ.</li>
-    <li>Información pública o de administrador de las páginas/perfiles oficiales de NodoXYZ (nombre, seguidores, estadísticas de publicaciones).</li>
+    <li><strong>Responsable:</strong> Ingeniería NodoXYZ Limitada, RUT 78.471.316-4, con domicilio en Ñuñoa, Región Metropolitana de Santiago.</li>
+    <li><strong>Representantes legales:</strong> Bruno Alonso Franco Sentis y Cristofer Walter Bordones Armijo, que administran la sociedad en conjunto.</li>
+    <li><strong>Contacto para datos personales:</strong> <a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a>. Este es el canal para cualquier solicitud sobre tus datos.</li>
+  </ul>
+
+  <h2 id="datos">2. Qué datos tratamos, para qué y por cuánto tiempo</h2>
+
+  <h3>2.1 Red de Profesionales (formulario «Regístrate como profesional»)</h3>
+  <dl class="legal-ficha">
+    <div><dt>Quiénes</dt><dd>Profesionales y técnicos de la construcción que se registran en nodoxyz.cl.</dd></div>
+    <div><dt>Datos</dt><dd>Nombre, email y CV (obligatorios). Si los entregas: RUT, teléfono, región y comuna, fecha de nacimiento, nacionalidad, licencias de conducir, títulos, rubros, años de experiencia, inscripción en ChileProveedores y en registros de consultores MINVU o MOP, patente profesional, enlace a LinkedIn o portafolio, comentarios y si quieres recibir novedades.</dd></div>
+    <div><dt>Fuente</dt><dd>Tú, al llenar el formulario.</dd></div>
+    <div><dt>Para qué</dt><dd>Formar equipos técnicos para licitaciones y proyectos, contactarte cuando una oportunidad calce con tu perfil y enviarte el correo que confirma tu registro. Las novedades del rubro te llegan solo si marcaste esa opción.</dd></div>
+    <div><dt>Base</dt><dd>Tu consentimiento, que entregas al marcar la autorización del formulario. Tu CV se presenta en una licitación o se envía a un mandante solo con tu autorización expresa para ese proceso.</dd></div>
+    <div><dt>Plazo</dt><dd>Tres años desde tu registro o tu última actualización, o hasta que pidas eliminarlo, lo que ocurra primero.</dd></div>
+  </dl>
+
+  <h3>2.2 Consultas por el botón «Consulta aquí»</h3>
+  <dl class="legal-ficha">
+    <div><dt>Quiénes</dt><dd>Personas y empresas que nos piden asesoría o una cotización.</dd></div>
+    <div><dt>Datos</dt><dd>Nombre, email o teléfono, comuna, el servicio y el contexto que eliges, los documentos que dices tener y tu mensaje.</dd></div>
+    <div><dt>Fuente</dt><dd>Tú, al completar la consulta.</dd></div>
+    <div><dt>Para qué</dt><dd>Responderte y preparar una propuesta de servicio.</dd></div>
+    <div><dt>Base</dt><dd>Medidas precontractuales que tú solicitas (art. 13 letra c).</dd></div>
+    <div><dt>Plazo</dt><dd>Doce meses si la consulta no termina en un servicio; después se eliminan. Si contratas, se conservan lo que dure el contrato y los plazos que exija la ley.</dd></div>
+  </dl>
+
+  <h3>2.3 Correos comerciales a empresas del rubro</h3>
+  <dl class="legal-ficha">
+    <div><dt>Quiénes</dt><dd>Constructoras, inmobiliarias, oficinas de arquitectura y otras empresas de la construcción, y las personas de contacto que esas empresas publican.</dd></div>
+    <div><dt>Datos</dt><dd>Nombre de la empresa, rubro, correo y teléfono de contacto y, cuando la empresa lo publica, el nombre y cargo de la persona de contacto.</dd></div>
+    <div><dt>Fuente</dt><dd>Fuentes de acceso público: el sitio web de cada empresa y los registros de Mercado Público. Cada contacto guarda la página de donde salió.</dd></div>
+    <div><dt>Para qué</dt><dd>Presentar los servicios de ingeniería de NodoXYZ con una secuencia corta de correos.</dd></div>
+    <div><dt>Base</dt><dd>Interés legítimo de NodoXYZ en ofrecer sus servicios a empresas del mismo rubro (art. 13 letra d). Los correos dicen quién escribe, el primero explica cómo pedir la baja y cualquier respuesta detiene la secuencia.</dd></div>
+    <div><dt>Plazo</dt><dd>Hasta que respondas o pidas la baja. Para cumplir tu oposición guardamos solo tu correo en una lista de exclusión, que sirve para no volver a escribirte.</dd></div>
+  </dl>
+
+  <h3>2.4 Navegación por el sitio</h3>
+  <dl class="legal-ficha">
+    <div><dt>Quiénes</dt><dd>Toda persona que visita nodoxyz.cl.</dd></div>
+    <div><dt>Datos</dt><dd>Dirección IP y datos técnicos del navegador, que reciben los proveedores que entregan el sitio, y datos de uso sin cookies descritos en la <a href="#cookies">sección 7</a>.</dd></div>
+    <div><dt>Para qué</dt><dd>Entregar el sitio, protegerlo de ataques y envíos automáticos, y saber qué partes se usan para mejorarlo.</dd></div>
+    <div><dt>Base</dt><dd>Interés legítimo de NodoXYZ en operar un sitio seguro y útil (art. 13 letra d).</dd></div>
+    <div><dt>Plazo</dt><dd>El que fija cada proveedor para sus registros técnicos. NodoXYZ no guarda tu IP.</dd></div>
+  </dl>
+
+  <p>
+    NodoXYZ no toma decisiones automatizadas ni elabora perfiles que produzcan efectos jurídicos
+    sobre ti o te afecten de forma significativa. Cada registro y cada consulta los revisa una
+    persona del equipo.
+  </p>
+
+  <h2 id="destinatarios">3. Con quién compartimos los datos</h2>
+  <p>
+    NodoXYZ no vende ni cede tus datos. Los tratan, por encargo nuestro y solo para operar los
+    servicios descritos, estos proveedores:
+  </p>
+  <ul>
+    <li><strong>Cloudflare, Inc.:</strong> aloja el sitio, guarda los registros, los CV y las consultas, protege los formularios con Turnstile y redirige los correos @nodoxyz.cl.</li>
+    <li><strong>Resend:</strong> envía el correo de confirmación de registro y los avisos internos de cada registro o consulta.</li>
+    <li><strong>Google LLC:</strong> la casilla de correo del equipo, las planillas de trabajo y la tipografía del sitio (Google Fonts).</li>
+    <li><strong>Microsoft Corporation:</strong> Microsoft Clarity, para medir el uso del sitio sin cookies (<a href="#cookies">sección 7</a>).</li>
+    <li><strong>Flagpedia (flagcdn.com):</strong> muestra las banderas del campo de teléfono y nacionalidad del formulario; recibe solo la solicitud de cada imagen.</li>
   </ul>
   <p>
-    No recolectamos, procesamos ni almacenamos datos personales de
-    terceros (seguidores, clientes o visitantes) más allá de las
-    métricas agregadas y anónimas que las propias plataformas exponen
-    a los administradores de una cuenta.
+    Fuera de ellos, tus datos van a un mandante solo en el caso de la sección 2.1, con tu
+    autorización para ese proceso, o cuando una ley o una autoridad competente lo exija.
   </p>
 
-  <h2>3. Finalidad</h2>
+  <h2 id="extranjero">4. Datos fuera de Chile</h2>
   <p>
-    Los datos se usan exclusivamente para programar, publicar y medir
-    el desempeño del contenido de las cuentas oficiales de NodoXYZ. No
-    se usan con fines publicitarios hacia terceros, no se venden ni se
-    comparten con otras empresas.
+    Los proveedores de la sección 3 están en Estados Unidos y operan infraestructura en varios
+    países, por lo que tus datos se tratan fuera de Chile. Los correos de Resend salen desde su
+    región de São Paulo, Brasil. Estos proveedores trabajan con términos de tratamiento de datos
+    que los obligan a resguardar la confidencialidad y la seguridad de la información. Cuando la
+    Agencia de Protección de Datos Personales califique el nivel de protección de esos países,
+    esta sección lo informará.
   </p>
 
-  <h2>4. Dónde se almacenan</h2>
+  <h2 id="seguridad">5. Seguridad</h2>
+  <ul>
+    <li>Todo el sitio funciona con conexión cifrada (HTTPS).</li>
+    <li>Los registros, los CV y las consultas se guardan en un almacenamiento al que solo se accede con una clave de administración que tiene el equipo de NodoXYZ.</li>
+    <li>Los formularios filtran envíos automáticos y validan cada dato en el servidor; el CV solo se acepta en PDF o Word de hasta 8 MB.</li>
+    <li>Solo los socios de NodoXYZ y las personas que trabajan bajo su responsabilidad acceden a los datos, con deber de confidencialidad.</li>
+    <li>Si una vulneración de seguridad pone en riesgo tus derechos, la reportamos a la Agencia y, cuando la ley lo exige, te avisamos.</li>
+  </ul>
+
+  <h2 id="derechos">6. Tus derechos y cómo ejercerlos</h2>
+  <p>Respecto de tus datos personales, tienes derecho a:</p>
+  <ul>
+    <li><strong>Acceso:</strong> saber qué datos tuyos tenemos, de dónde salieron y para qué los usamos.</li>
+    <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+    <li><strong>Supresión:</strong> pedir que los eliminemos.</li>
+    <li><strong>Oposición:</strong> pedir que dejemos de usarlos, en cualquier momento cuando la base es el interés legítimo o el envío de correos comerciales.</li>
+    <li><strong>Portabilidad:</strong> recibir en un formato electrónico de uso común los datos que nos entregaste.</li>
+    <li><strong>Bloqueo:</strong> pedir que suspendamos su uso mientras resolvemos una solicitud de rectificación, supresión u oposición.</li>
+    <li><strong>Retiro del consentimiento:</strong> cuando la base es tu consentimiento, retirarlo cuando quieras, sin efecto sobre lo tratado antes.</li>
+  </ul>
   <p>
-    La infraestructura que gestiona estas integraciones es de uso
-    interno y privado de NodoXYZ. Los tokens de acceso se almacenan de
-    forma cifrada y no se comparten con terceros distintos de la
-    plataforma social correspondiente (Meta, LinkedIn, X, TikTok, etc.).
+    Para ejercerlos, escribe a <a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a> con tu
+    nombre, un correo para responderte, los datos o el tratamiento al que se refiere tu solicitud y
+    lo que pides. Acusamos recibo y respondemos por escrito dentro de 30 días corridos, plazo que
+    se puede prorrogar una vez por otros 30. La rectificación, la supresión y la oposición son
+    siempre gratuitas.
+  </p>
+  <p>
+    Si rechazamos tu solicitud o no respondemos a tiempo, puedes reclamar ante la Agencia de
+    Protección de Datos Personales dentro de 30 días hábiles.
   </p>
 
-  <h2>5. Retención y eliminación</h2>
+  <h2 id="cookies">7. Cookies, almacenamiento del navegador y medición</h2>
   <p>
-    Los datos de una integración se conservan mientras la cuenta
-    permanezca conectada. Al desconectar una cuenta desde el panel de
-    administración, los tokens asociados se eliminan. Cualquier persona
-    puede solicitar la eliminación anticipada escribiendo a
+    <strong>nodoxyz.cl no instala cookies propias ni de publicidad.</strong> Guarda solo dos datos
+    en el almacenamiento local de tu navegador, que no salen de tu equipo:
+  </p>
+  <ul>
+    <li><code>nodoxyz_tema</code>: si elegiste el modo claro u oscuro, para recordarlo.</li>
+    <li><code>nodoxyz_popup_visto_hasta</code>: la hora hasta la que no se repite el aviso de la Red de Profesionales (45 minutos).</li>
+  </ul>
+  <p>
+    Para saber qué partes del sitio se usan, la página de inicio usa <strong>Microsoft Clarity
+    en modo sin cookies</strong>: registra clics, desplazamiento, movimientos del cursor, tiempo
+    en la página y el tipo de dispositivo, para armar mapas de calor y reproducciones de la visita
+    que no te identifican por nombre. Clarity oculta lo que escribes en los campos de texto y no registra el formulario
+    de profesionales. Al no usar cookies, cada visita se cuenta por separado.
+  </p>
+  <p>
+    Cloudflare Turnstile, que protege la consulta del botón «Consulta aquí», revisa señales
+    técnicas del navegador para distinguir a una persona de un programa automático.
+  </p>
+  <p>
+    Puedes borrar el almacenamiento local o bloquear estos servicios desde la configuración de tu
+    navegador; el sitio sigue funcionando, salvo el envío de la consulta, que necesita Turnstile.
+  </p>
+
+  <h2 id="redes">8. Cuentas de NodoXYZ en redes sociales</h2>
+  <p>
+    NodoXYZ conecta sus cuentas oficiales de Instagram, Facebook, LinkedIn, X, TikTok, YouTube y
+    otras plataformas a herramientas internas de gestión de contenido, para programar, publicar y medir sus
+    propias publicaciones. Para eso guarda los permisos de acceso (tokens) de esas cuentas y la
+    información de administrador que cada plataforma entrega: nombre de la cuenta, seguidores y
+    estadísticas agregadas de las publicaciones.
+  </p>
+  <p>
+    No recolectamos datos personales de seguidores ni de visitantes de esas cuentas más allá de
+    las métricas agregadas que la plataforma muestra al administrador. Los permisos se guardan en
+    infraestructura interna de NodoXYZ, se eliminan al desconectar la cuenta y se comparten solo con
+    la plataforma correspondiente. Para pedir la eliminación anticipada, escribe a
     <a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a>.
   </p>
 
-  <h2>6. Derechos</h2>
+  <h2 id="cambios">9. Cambios a esta política</h2>
   <p>
-    Conforme a la Ley N° 19.628, cualquier persona puede solicitar
-    acceso, rectificación, cancelación o bloqueo de sus datos personales
-    en poder de NodoXYZ, escribiendo a
-    <a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a>.
+    Cuando cambie lo que recogemos, para qué lo usamos o con quién lo compartimos, publicamos aquí
+    una nueva versión con su fecha. Si el cambio afecta un tratamiento basado en tu consentimiento,
+    te lo pedimos de nuevo.
   </p>
-
-  <h2>7. Contacto</h2>
-  <p>
-    Ante consultas sobre esta política, escribir a
-    <a href="mailto:contacto@nodoxyz.cl">contacto@nodoxyz.cl</a>.
-  </p>
-
-  <footer>
-    Ingeniería NodoXYZ Limitada — nodoxyz.cl —
-    <a href="/legal/terminos">Términos de Servicio</a>
-  </footer>
 </main>
+
+<footer class="site-footer">
+  <span>Ingeniería NodoXYZ Ltda. · RUT 78.471.316-4 · Ñuñoa, Santiago · © 2026</span>
+  <nav class="footer-links" aria-label="Documentos legales">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="privacidad.html#cookies">Cookies</a>
+    <a href="terminos.html">Términos</a>
+  </nav>
+</footer>
+
 </body>
 </html>

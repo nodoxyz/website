@@ -88,6 +88,10 @@ function normalizarRut(rutRaw) {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEFONO_RE = /^[0-9+\-\s()]+$/;
 const CV_MAX_BYTES = 8 * 1024 * 1024;
+// Plazo de conservación de la política de privacidad (sección 2.1): tres años desde el registro.
+// KV borra solo el registro y su CV al vencer.
+const CONSERVACION_SEGUNDOS = 3 * 365 * 24 * 60 * 60;
+const CV_EXTENSIONES = /\.(pdf|docx?)$/i;
 const CV_ALLOWED_TYPES = new Set([
   'application/pdf',
   'application/msword',
@@ -218,7 +222,8 @@ export default {
         errores.push('cv_file');
       } else {
         if (file.size > CV_MAX_BYTES) errores.push('cv_file_size');
-        if (file.type && !CV_ALLOWED_TYPES.has(file.type)) errores.push('cv_file_type');
+        // Un archivo sin tipo declarado también se revisa, por su extensión.
+        if (file.type ? !CV_ALLOWED_TYPES.has(file.type) : !CV_EXTENSIONES.test(file.name || '')) errores.push('cv_file_type');
       }
 
       if (errores.length > 0) {
@@ -263,6 +268,7 @@ export default {
         }
         const key = `${id}/${sanitizeFilename(file.name)}`;
         await env.CVFILES.put(key, await file.arrayBuffer(), {
+          expirationTtl: CONSERVACION_SEGUNDOS,
           metadata: { contentType: file.type || 'application/octet-stream', filename: file.name },
         });
         registro.cv_file_key = key;
@@ -270,7 +276,7 @@ export default {
         registro.cv_file_size = file.size;
       }
 
-      await env.REGISTROS.put(id, JSON.stringify(registro));
+      await env.REGISTROS.put(id, JSON.stringify(registro), { expirationTtl: CONSERVACION_SEGUNDOS });
       await enviarCorreoAgradecimiento(env, registro);
       ctx.waitUntil(avisarRegistro(env, registro));
       return json({ ok: true, id }, 201, headers);

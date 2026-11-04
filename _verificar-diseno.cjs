@@ -5,7 +5,7 @@
  * Uso (Playwright está instalado bajo el Node de hermes; CommonJS a propósito, ESM ignora NODE_PATH):
  *   NODE_PATH="C:/Users/NodoXYZ/AppData/Local/hermes/node/node_modules" node _verificar-diseno.cjs [carpeta-capturas]
  *
- * Mide, en index.html y profesionales.html, a 1440 px y a 390 px, en claro y en oscuro:
+ * Mide, en el inicio, profesionales y las dos páginas legales, a 1440 px y a 390 px, en claro y en oscuro:
  *   - que la página no se desborde a lo ancho;
  *   - en los proyectos: que número, título, mandante, lugar y ficha queden a la misma altura en
  *     cada fila de dos tarjetas, y que cada valor de la ficha ocupe una sola línea sin cortarse;
@@ -18,7 +18,7 @@ const { chromium } = require('playwright');
 
 const RAIZ = __dirname;
 const SALIDA = path.resolve(process.argv[2] || path.join(RAIZ, '_capturas'));
-const PAGINAS = ['index.html', 'profesionales.html'];
+const PAGINAS = ['index.html', 'profesionales.html', 'legal/privacidad.html', 'legal/terminos.html'];
 const ANCHOS = [1440, 390];
 const TEMAS = ['light', 'dark'];
 
@@ -66,7 +66,7 @@ const TEMAS = ['light', 'dark'];
         r.valores.forEach((f) => fallas.push(`${caso}: ${f}`));
         if (r.raya) fallas.push(`${caso}: queda una raya larga en el texto visible`);
 
-        await p.screenshot({ path: path.join(SALIDA, `${pagina.replace('.html', '')}-${ancho}-${tema}.png`), fullPage: true });
+        await p.screenshot({ path: path.join(SALIDA, `${pagina.replace('.html', '').replace('/', '-')}-${ancho}-${tema}.png`), fullPage: true });
         await contexto.close();
       }
     }

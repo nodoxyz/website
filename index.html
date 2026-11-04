@@ -157,6 +157,7 @@
     <span>Ingeniería NodoXYZ Ltda. · RUT 78.471.316-4 · Ñuñoa, Santiago · © 2026</span>
     <nav class="footer-links" aria-label="Documentos legales">
       <a href="legal/privacidad.html">Privacidad</a>
+      <a href="legal/privacidad.html#cookies">Cookies</a>
       <a href="legal/terminos.html">Términos</a>
     </nav>
   </footer>
@@ -184,7 +185,7 @@
       <div class="info-note" style="margin-top: 0; margin-bottom: 1.25rem;">
         <span class="info-note-icon">🔒</span>
         <p class="info-note-text">
-          <strong>Privacidad garantizada:</strong> Tus datos son estrictamente privados, se manejan bajo estricta confidencialidad y no serán compartidos con terceros.
+          <strong>Tus datos, bajo confidencialidad:</strong> los usamos solo para contactarte por oportunidades. Tu CV va a un mandante únicamente con tu autorización para ese proceso. Detalle en la <a href="legal/privacidad.html#datos">política de privacidad</a>.
         </p>
       </div>
 
@@ -206,7 +207,7 @@
   </svg>
 </button>
 
-<div class="chat-panel" id="chat-panel" hidden role="dialog" aria-modal="false" aria-label="Consulta rápida">
+<div class="chat-panel" id="chat-panel" data-clarity-mask="true" hidden role="dialog" aria-modal="false" aria-label="Consulta rápida">
   <div class="chat-panel-header">
     <div>
       <span class="chat-panel-badge">NodoXYZ</span>
@@ -229,6 +230,7 @@
 <script src="data/bot-config.js"></script>
 <script src="js/portada.js"></script>
 <script src="js/chat-widget-guiado.js"></script>
+<script src="js/metricas.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const btnRegistro = document.getElementById('btn-registro-nav');

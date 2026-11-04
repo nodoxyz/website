@@ -289,6 +289,7 @@
           <span class="info-btn-label">Enviar consulta</span>
         </button>
         <p class="chat-status" id="chat-status"></p>
+        <p class="chat-legal">Usamos estos datos solo para responder tu consulta, según la <a href="legal/privacidad.html#datos" target="_blank" rel="noopener">política de privacidad</a>.</p>
       </div>
       ${botonCambiar()}
     `);

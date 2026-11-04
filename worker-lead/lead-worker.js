@@ -22,8 +22,9 @@
  *   - Honeypot: campo oculto "web" que un bot llena y un humano nunca ve —
  *     si viene relleno, se responde 200 (para no delatar el filtro) pero
  *     no se guarda nada.
- *   - CORS restringido a un solo origen fijo (https://nodoxyz.cl), sin
- *     comodín ni excepciones de localhost/preview — a diferencia de
+ *   - CORS restringido a los dos dominios del sitio (https://nodoxyz.cl y,
+ *     desde el 04-11-2026, https://www.nodoxyz.cl), sin comodín ni
+ *     excepciones de localhost/preview, a diferencia de
  *     profesionales-worker.js, que sí las tiene. Esto es intencional (ver
  *     brief, "Requisitos de seguridad": "CORS solo https://nodoxyz.cl.
  *     Nunca *") y significa que probar este endpoint abriendo el HTML por
@@ -32,8 +33,8 @@
  *     dashboard de Cloudflare (Security → WAF → Rate limiting rules) para
  *     la ruta /lead — así lo pide el brief ("antes del Worker"). Pendiente
  *     de configurar a mano, ver README.md de esta carpeta.
- *   - Retención/borrado de leads no convertidos: todavía sin definir (ver
- *     Fase 4 del brief). Por ahora los leads no expiran solos en KV.
+ *   - Retención: los leads vencen solos en KV a los doce meses, como dice la
+ *     política de privacidad (sección 2.2). Los anteriores al 04-11-2026 no vencen.
  *
  * Despliegue:
  *   cd Website/worker-lead
@@ -46,7 +47,9 @@
 
 import { avisarEquipo } from '../worker/aviso-equipo.js';
 
-const ALLOWED_ORIGIN = 'https://nodoxyz.cl';
+// Solo los dos dominios del sitio. www redirige a nodoxyz.cl desde el 04-11-2026
+// (functions/_middleware.js), pero se acepta igual por si alguien llega antes de la redirección.
+const ALLOWED_ORIGINS = ['https://nodoxyz.cl', 'https://www.nodoxyz.cl'];
 
 // Aviso al equipo de cada consulta nueva (../worker/aviso-equipo.js, secret RESEND_API_KEY).
 // Best-effort: el lead ya quedó en KV y un fallo de envío solo se loggea.
@@ -72,9 +75,9 @@ async function avisarLead(env, lead) {
   }
 }
 
-function corsHeaders() {
+function corsHeaders(origin) {
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, x-admin-key',
     'Access-Control-Max-Age': '86400',
@@ -103,6 +106,9 @@ const RAMAS_VALIDAS = new Set([
 // Estas 2 ramas saltan Paso 2 (contexto) y Paso 3 (documentos) y van
 // directo a Paso 4 (comuna) — ver brief, "Flujo del formulario".
 const RAMAS_SIN_PASO2 = new Set(['informacion', 'otro']);
+
+// Plazo de conservación de la política de privacidad (sección 2.2): doce meses; KV borra el lead al vencer.
+const CONSERVACION_SEGUNDOS = 365 * 24 * 60 * 60;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TELEFONO_RE = /^[0-9+\-\s()]{6,}$/;
@@ -133,7 +139,7 @@ async function verificarTurnstile(token, ip, secret) {
 
 export default {
   async fetch(request, env, ctx) {
-    const headers = corsHeaders();
+    const headers = corsHeaders(request.headers.get('Origin') || '');
     const url = new URL(request.url);
 
     if (request.method === 'OPTIONS') {
@@ -193,7 +199,7 @@ export default {
         contacto: String(body.contacto).trim(),
       };
 
-      await env.LEADS.put(id, JSON.stringify(lead));
+      await env.LEADS.put(id, JSON.stringify(lead), { expirationTtl: CONSERVACION_SEGUNDOS });
       ctx.waitUntil(avisarLead(env, lead));
       return json({ ok: true, id }, 201, headers);
     }
