@@ -238,19 +238,20 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
 .incluye li { font-size: 0.88rem; font-weight: 300; color: var(--texto); }
 .incluye li::before { content: ""; display: inline-block; width: 10px; height: 1px; background: var(--linea); vertical-align: middle; margin-right: 0.5rem; }
 
-/* Proyectos: cada ficha ocupa 6 filas de la grilla madre (subgrid), así dibujo, número, título,
-   mandante, lugar y ficha quedan a la misma altura en las dos columnas. */
+/* Proyectos: cada ficha ocupa 4 filas de la grilla madre (subgrid): dibujo, número con título,
+   mandante con lugar, y datos. Así quedan a la misma altura en las dos columnas. */
 
 /* El espacio entre filas es uno solo (madre y fichas): si difieren, Chromium reparte la diferencia
    dentro de cada ficha. La separación entre una fila de proyectos y la siguiente es el margen de la ficha. */
-.proyectos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; row-gap: 0.75rem; }
+.proyectos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; row-gap: 0.4rem; }
 
-.proy { display: grid; grid-row: span 6; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.proy { display: grid; grid-row: span 4; grid-template-rows: subgrid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
 .proy > * { margin: 0; min-width: 0; }
-.proy > .rot { align-self: end; margin-top: 0.25rem; }
-.proy h3 { font-size: 1.25rem; font-weight: 300; line-height: 1.3; }
-.proy .nombre { font-size: 0.75rem; letter-spacing: 0.14em; font-weight: 500; }
-.proy .lugar { font-size: 0.88rem; font-weight: 300; color: var(--texto-2); }
+.proy .titulo { display: flex; align-items: baseline; gap: 0.75rem; margin-top: 0.35rem; }
+.proy .titulo .rot { flex: none; }
+.proy h3 { font-size: 1.12rem; font-weight: 300; line-height: 1.3; }
+.proy .linea2 { font-size: 0.82rem; font-weight: 300; color: var(--texto-2); }
+.proy .linea2 b { font-weight: 400; color: var(--tinta); }
 
 /* La caja manda el tamaño y el dibujo se ajusta adentro: una imagen grande no estira la columna. */
 .dibujo { position: relative; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid var(--linea); background: var(--papel); }
@@ -258,11 +259,10 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
 /* Los dibujos son línea negra sobre blanco: en oscuro se invierten y el negro se funde con el papel. */
 :root[data-theme="dark"] .dibujo img { filter: invert(1) hue-rotate(180deg); mix-blend-mode: lighten; opacity: 0.9; }
 
-/* Ficha en filas: el valor tiene el ancho de la tarjeta y queda en una sola línea. */
-.ficha { align-self: start; margin-bottom: 2.75rem !important; padding-top: 0.9rem; border-top: 1px solid var(--linea); display: grid; gap: 0.5rem; }
-.ficha div { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: baseline; gap: 0.75rem; }
-.ficha dt { font-size: 0.62rem; letter-spacing: 0.18em; color: var(--acento); }
-.ficha dd { font-size: 0.88rem; font-weight: 300; white-space: nowrap; }
+/* Datos de la obra en una línea, sin rótulos: servicio · estructura · dimensión. El margen inferior
+   separa una fila de proyectos de la siguiente. */
+.proy .datos { align-self: start; margin-bottom: 2.75rem; padding-top: 0.5rem; border-top: 1px solid var(--linea); font-size: 0.84rem; font-weight: 300; color: var(--texto); }
+.proy .datos i { font-style: normal; color: var(--linea); padding: 0 0.4rem; }
 
 /* Somos NodoXYZ */
 
@@ -383,7 +383,6 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
   .grilla, .fichas { grid-template-columns: 1fr; }
   .grilla > li, .fichas > li { border-left: 0 !important; padding-left: 0 !important; }
   .pilar { grid-template-columns: 96px 1fr; }
-  .ficha div { grid-template-columns: 92px minmax(0, 1fr); }
   .legal { padding-left: 1rem; padding-right: 1rem; }
   .legal-ficha div { grid-template-columns: 1fr; gap: 0.2rem; }
   .site-footer { flex-direction: column; text-align: center; }

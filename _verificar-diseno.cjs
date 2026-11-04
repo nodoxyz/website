@@ -7,8 +7,8 @@
  *
  * Mide, en el inicio, profesionales y las dos páginas legales, a 1440 px y a 390 px, en claro y en oscuro:
  *   - que la página no se desborde a lo ancho;
- *   - en los proyectos: que número, título, mandante, lugar y ficha queden a la misma altura en
- *     cada fila de dos tarjetas, y que cada valor de la ficha ocupe una sola línea sin cortarse;
+ *   - en los proyectos: que título, mandante con lugar y datos queden a la misma altura en cada
+ *     fila de dos tarjetas, y que con dos columnas cada una de esas líneas ocupe una sola línea;
  *   - que no quede la raya larga en el texto visible.
  * Deja una captura de página completa por caso en la carpeta indicada (por defecto, _capturas/).
  */
@@ -45,16 +45,16 @@ const TEMAS = ['light', 'dark'];
           for (let i = 0; i + 1 < proys.length; i += 2) {
             const a = proys[i], b = proys[i + 1];
             if (a.getBoundingClientRect().top !== b.getBoundingClientRect().top) continue; // en una columna no se comparan
-            for (const sel of ['.rot', 'h3', '.nombre', '.lugar', '.ficha']) {
+            for (const sel of ['.titulo', '.linea2', '.datos']) {
               const ya = a.querySelector(sel).getBoundingClientRect().top;
               const yb = b.querySelector(sel).getBoundingClientRect().top;
               if (Math.abs(ya - yb) > 0.5) out.filas.push(`${sel} desalineado ${Math.round(ya)} vs ${Math.round(yb)} (proyectos ${i + 1} y ${i + 2})`);
             }
           }
-          for (const dd of document.querySelectorAll('.ficha dd')) {
-            const alto = parseFloat(getComputedStyle(dd).lineHeight) || 20;
-            if (dd.getBoundingClientRect().height > alto * 1.5) out.valores.push(`"${dd.textContent}" ocupa más de una línea`);
-            if (dd.scrollWidth > dd.clientWidth + 1) out.valores.push(`"${dd.textContent}" se corta`);
+          const dosColumnas = proys.length > 1 && proys[0].getBoundingClientRect().top === proys[1].getBoundingClientRect().top;
+          if (dosColumnas) for (const el of document.querySelectorAll('.proy h3, .proy .linea2, .proy .datos')) {
+            const alto = parseFloat(getComputedStyle(el).lineHeight) || 20;
+            if (el.getBoundingClientRect().height - parseFloat(getComputedStyle(el).paddingTop) > alto * 1.5) out.valores.push(`"${el.textContent}" ocupa más de una línea`);
           }
           out.raya = document.body.innerText.includes('\u2014');
           return out;
