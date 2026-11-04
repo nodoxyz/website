@@ -28,3 +28,18 @@ tienen secretos, ya son públicos en GitHub), pero no se ejecutan como
 Worker ahí; esos se despliegan aparte con
 `npx wrangler deploy --name <nombre>` desde cada carpeta (ver sus
 README.md).
+
+## Caché: versión en la URL de cada CSS y JS (04-11-2026)
+
+Cloudflare entrega los `.css` y `.js` con 4 horas de caché en el navegador: lo fija el ajuste
+"Browser Cache TTL" de la zona nodoxyz.cl, que pisa lo que diga `_headers`. Si se publica un cambio
+de `styles.css` o de un script sin cambiar su URL, quien ya visitó el sitio ve el HTML nuevo con la
+hoja o el script anterior (así faltó la línea de los datos de cada proyecto el 04-11-2026).
+
+**Regla:** al cambiar `styles.css` o un archivo de `js/` o `data/`, sube el `?v=AAAAMMDD` de su
+enlace en todas las páginas (`index.html`, `profesionales.html`, `legal/*.html`). Si alguien deja
+la zona en "Respect Existing Headers" (Caching > Configuration > Browser Cache TTL), `_headers` ya
+pide revalidar siempre y la versión en la URL deja de ser necesaria.
+
+Antes de publicar: `NODE_PATH="C:/Users/NodoXYZ/AppData/Local/hermes/node/node_modules" node _verificar-diseno.cjs`
+mide desbordes, alineación de proyectos y texto en una línea en las cuatro páginas, en claro y oscuro.
