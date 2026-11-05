@@ -14,7 +14,7 @@
  * proyecto de nodoxyz.cl (Settings > Overview > Project ID).
  */
 (function () {
-  var CLARITY_ID = '';
+  var CLARITY_ID = 'z8q4zbelem';
   if (!CLARITY_ID || location.hostname !== 'nodoxyz.cl') return;
 
   window.clarity = window.clarity || function () {
