@@ -1,10 +1,12 @@
 /**
- * metricas.js: Microsoft Clarity en modo sin cookies, solo en la página de inicio de nodoxyz.cl.
+ * metricas.js: Microsoft Clarity sin cookies de nodoxyz.cl, solo en la página de inicio.
  * Da mapas de calor de clics y desplazamiento, tiempo en la página y reproducciones de la visita.
  *
- * Sin cookies: se le avisa a Clarity desde el primer momento que no hay consentimiento
- * (consentv2 con analytics_Storage "denied"), así que asigna un id por página vista y no escribe
- * cookies (learn.microsoft.com/clarity/setup-and-installation/clarity-consent-api-v2). En el panel
+ * Sin cookies de nodoxyz.cl: se le avisa a Clarity desde el primer momento que no hay consentimiento
+ * (consentv2 con analytics_Storage "denied"), así que asigna un id por visita (_cltk, en sessionStorage)
+ * y no escribe cookies en el dominio del sitio (learn.microsoft.com/clarity/setup-and-installation/
+ * clarity-consent-api-v2). Medido el 05-11-2026 en Chrome: igual quedan cookies de terceros de Microsoft
+ * en clarity.ms y bing.com (MUID, CLID, MR, SM, ANONCHK), que la política declara. En el panel
  * de Clarity, además, va activado Settings > Setup > Consent Mode. Lo que se escribe en el chat
  * queda oculto (data-clarity-mask en #chat-panel) y el formulario de profesionales no carga
  * este archivo. Todo esto lo describe la sección 7 de legal/privacidad.html: si cambia, se
