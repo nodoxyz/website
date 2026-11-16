@@ -317,6 +317,139 @@ function initTelefonoPais() {
   };
 }
 
+// --- Universidad o instituto: buscador sobre data/instituciones.js ---------
+// Lista oficial del Mineduc (generada por data/_generar-instituciones.py). Se busca sin tildes y
+// por palabras sueltas en cualquier orden ("chile u" encuentra "Universidad de Chile"). Si la
+// institución no está (extranjera o cerrada), la última opción deja usar lo escrito tal cual: eso
+// es el "Otra". Se envía el nombre y, si salió de la lista, su código de registro del Mineduc.
+const INSTITUCIONES_LISTA = (typeof INSTITUCIONES !== 'undefined') ? INSTITUCIONES : [];
+
+function sinTildes(texto) {
+  return String(texto).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+}
+
+function initInstitucion() {
+  const campo = document.getElementById('inst-field');
+  const input = document.getElementById('institucion');
+  const lista = document.getElementById('institucion-lista');
+  const indice = INSTITUCIONES_LISTA.map(i => ({ ...i, clave: sinTildes(i.nombre) }));
+  let codigo = '';     // código del Mineduc si el nombre salió de la lista
+  let opciones = [];   // <li> elegibles en el orden mostrado
+  let activa = -1;
+
+  function exacta(texto) {
+    const t = sinTildes(texto);
+    return t ? indice.find(i => i.clave === t) : undefined;
+  }
+
+  function marcarActiva(n) {
+    opciones.forEach((li, k) => li.classList.toggle('tel-opt-activa', k === n));
+    activa = n;
+    if (n >= 0) {
+      opciones[n].scrollIntoView({ block: 'nearest' });
+      input.setAttribute('aria-activedescendant', opciones[n].id);
+    } else {
+      input.removeAttribute('aria-activedescendant');
+    }
+  }
+
+  function elegir(nombre, cod) {
+    input.value = nombre;
+    codigo = cod || '';
+    cerrar();
+  }
+
+  function pintar() {
+    const texto = input.value;
+    const palabras = sinTildes(texto).split(/\s+/).filter(Boolean);
+    const hallados = palabras.length ? indice.filter(i => palabras.every(p => i.clave.includes(p))) : indice;
+    lista.innerHTML = '';
+    opciones = [];
+    let grupo = '';
+    for (const inst of hallados) {
+      if (inst.grupo !== grupo) {
+        grupo = inst.grupo;
+        const cab = document.createElement('li');
+        cab.className = 'inst-grupo';
+        cab.setAttribute('role', 'presentation');
+        cab.textContent = grupo;
+        lista.appendChild(cab);
+      }
+      const li = document.createElement('li');
+      li.id = `inst-${inst.codigo}`;
+      li.setAttribute('role', 'option');
+      li.textContent = inst.nombre;
+      li.addEventListener('mousedown', (e) => { e.preventDefault(); elegir(inst.nombre, inst.codigo); });
+      lista.appendChild(li);
+      opciones.push(li);
+    }
+    if (texto.trim() && !exacta(texto)) {
+      const otra = document.createElement('li');
+      otra.id = 'inst-otra';
+      otra.className = 'inst-otra';
+      otra.setAttribute('role', 'option');
+      otra.textContent = `Usar «${texto.trim()}» (otra institución)`;
+      otra.addEventListener('mousedown', (e) => { e.preventDefault(); elegir(texto.trim(), ''); });
+      lista.appendChild(otra);
+      opciones.push(otra);
+    } else if (!hallados.length) {
+      const vacia = document.createElement('li');
+      vacia.className = 'inst-vacia';
+      vacia.textContent = 'Escribe el nombre de tu institución';
+      lista.appendChild(vacia);
+    }
+    marcarActiva(palabras.length && opciones.length ? 0 : -1);
+  }
+
+  function abrir() {
+    pintar();
+    lista.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+  function cerrar() {
+    lista.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    marcarActiva(-1);
+  }
+
+  input.addEventListener('focus', abrir);
+  input.addEventListener('click', () => { if (lista.hidden) abrir(); });
+  input.addEventListener('input', () => { codigo = ''; abrir(); });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (lista.hidden) { abrir(); return; }
+      if (!opciones.length) return;
+      const paso = e.key === 'ArrowDown' ? 1 : -1;
+      marcarActiva((activa + paso + opciones.length) % opciones.length);
+    } else if (e.key === 'Enter' && !lista.hidden) {
+      // Con la lista abierta, Enter elige la opción marcada en vez de enviar el formulario.
+      e.preventDefault();
+      if (activa >= 0) opciones[activa].dispatchEvent(new MouseEvent('mousedown'));
+      else cerrar();
+    } else if (e.key === 'Escape' && !lista.hidden) {
+      cerrar();
+    } else if (e.key === 'Tab') {
+      cerrar();
+    }
+  });
+  // Al salir del campo: si lo escrito coincide con un nombre de la lista (sin importar tildes ni
+  // mayúsculas), se deja el nombre oficial y su código.
+  input.addEventListener('blur', () => {
+    const inst = exacta(input.value);
+    if (inst) { input.value = inst.nombre; codigo = inst.codigo; }
+    else input.value = input.value.trim();
+    cerrar();
+  });
+  document.addEventListener('click', (e) => { if (!campo.contains(e.target)) cerrar(); });
+
+  return {
+    getNombre: () => input.value.trim(),
+    getCodigo: () => (exacta(input.value)?.codigo || codigo),
+    limpiar: () => { input.value = ''; codigo = ''; cerrar(); },
+  };
+}
+
 // --- Dropzone de CV -------------------------------------------------------
 
 function initDropzone() {
@@ -413,6 +546,7 @@ function initFormulario() {
   const selectComuna = document.getElementById('comuna');
   const telefonoInput = document.getElementById('telefono');
   const telefonoPais = initTelefonoPais();
+  const institucion = initInstitucion();
   const errorNombre = document.getElementById('error-nombre');
   const errorRut = document.getElementById('error-rut');
   const errorEmail = document.getElementById('error-email');
@@ -691,6 +825,8 @@ function initFormulario() {
       comuna: selectComuna.value ? (selectComuna.options[selectComuna.selectedIndex]?.textContent || '') : '',
       comuna_id: selectComuna.value,
       titulo_otro: form.titulo_otro.value.trim(),
+      institucion: institucion.getNombre(),
+      institucion_registro: institucion.getCodigo(),
       anios_experiencia: form.anios_experiencia.value,
       rubro_otro: form.rubro_otro.value.trim(),
       cv_link: form.cv_link.value.trim(),
@@ -729,6 +865,7 @@ function initFormulario() {
       else setStatus(status, '¡Gracias! Recibimos tu registro y te contactaremos cuando surja un proyecto para tu rubro.', 'ok');
       form.reset();
       poblarComunas(selectComuna, '');
+      institucion.limpiar();
       cvFile = null;
       document.getElementById('dropzone-idle').hidden = false;
       document.getElementById('dropzone-file').hidden = true;

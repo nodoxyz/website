@@ -712,6 +712,45 @@ h1, h2, h3 { font-family: var(--letra); font-weight: 400; color: var(--tinta); t
   white-space: nowrap;
 }
 
+/* Universidad o instituto: buscador sobre la lista del Mineduc (data/instituciones.js). Reusa el
+   dropdown del teléfono; aquí ocupa todo el ancho y los nombres largos de CFT pasan a dos líneas. */
+.inst-field {
+  position: relative;
+  width: 100%;
+}
+
+.inst-dropdown {
+  width: 100%;
+  max-height: 18rem;
+}
+
+.inst-dropdown li {
+  line-height: 1.35;
+}
+
+.inst-dropdown li.inst-grupo {
+  padding: 0.55rem 0.75rem 0.2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-2);
+  cursor: default;
+}
+
+.inst-dropdown li.inst-grupo:hover {
+  background: transparent;
+}
+
+.inst-dropdown li.inst-otra {
+  border-top: 1px solid color-mix(in srgb, var(--acento) 18%, transparent);
+  color: var(--texto-2);
+}
+
+.inst-dropdown li.inst-vacia {
+  color: var(--texto-2);
+  cursor: default;
+}
+
 .field label:not(.checkbox) {
   font-size: 0.98rem;
   letter-spacing: 0.01em;

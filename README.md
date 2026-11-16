@@ -41,5 +41,13 @@ enlace en todas las páginas (`index.html`, `profesionales.html`, `legal/*.html`
 la zona en "Respect Existing Headers" (Caching > Configuration > Browser Cache TTL), `_headers` ya
 pide revalidar siempre y la versión en la URL deja de ser necesaria.
 
+## Universidad o instituto en el registro de profesionales (16-11-2026)
+
+La lista del campo sale del Directorio de Instituciones de Educación Superior vigentes del Mineduc
+(mayo 2026, copia en `data/_fuentes/`). `python data/_generar-instituciones.py` la convierte en
+`data/instituciones.js`; no se edita a mano. El worker guarda `institucion` y, si salió de la lista,
+`institucion_registro` (código del Mineduc, ej. A1). Prueba: `node _probar-institucion.cjs` (con el
+mismo `NODE_PATH` de abajo).
+
 Antes de publicar: `NODE_PATH="C:/Users/NodoXYZ/AppData/Local/hermes/node/node_modules" node _verificar-diseno.cjs`
 mide desbordes, alineación de proyectos y texto en una línea en las cuatro páginas, en claro y oscuro.

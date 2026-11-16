@@ -167,6 +167,7 @@ async function avisarRegistro(env, registro) {
         ['Teléfono', registro.telefono],
         ['Comuna', [registro.comuna, registro.region].filter(Boolean).join(', ')],
         ['Títulos', [...registro.titulos, registro.titulo_otro].filter(Boolean).join(', ')],
+        ['Universidad o instituto', registro.institucion || ''],
         ['Rubros', [...registro.rubros, registro.rubro_otro].filter(Boolean).join(', ')],
         ['Experiencia', registro.anios_experiencia],
         ['LinkedIn o portafolio', registro.cv_link],
@@ -248,6 +249,10 @@ export default {
         licencia_conducir: String(fields.licencia_conducir || ''),
         titulos: Array.isArray(fields.titulos) ? fields.titulos.slice(0, 20) : [],
         titulo_otro: String(fields.titulo_otro || '').trim(),
+        // Institución del título principal: nombre de la lista del Mineduc (con su código de registro,
+        // ej. A1) o lo que la persona escribió si no estaba en la lista (código vacío).
+        institucion: String(fields.institucion || '').trim().slice(0, 200),
+        institucion_registro: String(fields.institucion_registro || '').trim().slice(0, 10),
         anios_experiencia: String(fields.anios_experiencia || '').trim(),
         rubros: Array.isArray(fields.rubros) ? fields.rubros.slice(0, 20) : [],
         rubro_otro: String(fields.rubro_otro || '').trim(),

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20261105">
+<link rel="stylesheet" href="styles.css?v=20261116">
 </head>
 <body>
 
@@ -156,6 +156,13 @@
           <div class="field field-wide">
             <label for="titulo_otro">Otro título/profesión</label>
             <input type="text" id="titulo_otro" name="titulo_otro" placeholder="Marca 'Otro' arriba para especificar" disabled>
+          </div>
+          <div class="field field-wide">
+            <label for="institucion">Universidad o instituto de tu título principal</label>
+            <div class="inst-field" id="inst-field">
+              <input type="text" id="institucion" name="institucion" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="institucion-lista" autocomplete="off" maxlength="200" placeholder="Escribe para buscar, ej: Universidad de Chile, Duoc UC, INACAP">
+              <ul class="tel-dropdown inst-dropdown" id="institucion-lista" role="listbox" aria-label="Instituciones de educación superior" hidden></ul>
+            </div>
           </div>
 
           <div class="field field-wide">
@@ -312,6 +319,7 @@
 </main>
 
 <script src="data/localidades.js?v=20261105"></script>
-<script src="js/registro.js?v=20261105"></script>
+<script src="data/instituciones.js?v=20261116"></script>
+<script src="js/registro.js?v=20261116"></script>
 </body>
 </html>
